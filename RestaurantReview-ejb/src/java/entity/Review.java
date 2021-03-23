@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,6 +27,7 @@ public class Review implements Serializable {
     private Integer rating;
     private String[] photos;
     private Integer numOfLikes;
+    private Date timeStamp;
     
     @ManyToOne
     private Customer creater;
@@ -39,11 +41,12 @@ public class Review implements Serializable {
     public Review() {
     }
 
-    public Review(String content, Integer rating, String[] photos, Integer numOfLikes) {
+    public Review(String content, Integer rating, String[] photos) {
         this.content = content;
         this.rating = rating;
         this.photos = photos;
-        this.numOfLikes = numOfLikes;
+        this.numOfLikes = 0;
+        this.timeStamp = new Date();
     }
     
     
@@ -144,6 +147,14 @@ public class Review implements Serializable {
     @Override
     public String toString() {
         return "entity.Review[ id=" + reviewId + " ]";
+    }
+
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
     }
     
 }

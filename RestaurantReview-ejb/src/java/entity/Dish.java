@@ -26,7 +26,6 @@ public class Dish implements Serializable {
     private String photo;
     private BigDecimal price;
     private Boolean recommended;
-    private Boolean notAvailable;
     
     @ManyToOne(optional = false)
     private Restaurant restaurant;
@@ -34,13 +33,12 @@ public class Dish implements Serializable {
     public Dish() {
     }
 
-    public Dish(String name, String description, String photo, BigDecimal price, Boolean recommended, Boolean notAvailable) {
+    public Dish(String name, String description, String photo, BigDecimal price, Boolean recommended) {
         this.name = name;
         this.description = description;
         this.photo = photo;
         this.price = price;
         this.recommended = recommended;
-        this.notAvailable = notAvailable;
     }
     
     
@@ -91,14 +89,6 @@ public class Dish implements Serializable {
 
     public void setRecommended(Boolean recommended) {
         this.recommended = recommended;
-    }
-
-    public Boolean getNotAvailable() {
-        return notAvailable;
-    }
-
-    public void setNotAvailable(Boolean notAvailable) {
-        this.notAvailable = notAvailable;
     }
 
     public Restaurant getRestaurant() {

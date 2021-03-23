@@ -23,6 +23,7 @@ public class Restaurant extends User implements Serializable {
     private String[] photos;
     private Boolean acceptReservation;
     private double creditAmount;
+    private String description;
     
     @OneToOne
     private BankAccount bankAccount;
@@ -43,7 +44,7 @@ public class Restaurant extends User implements Serializable {
         
     }
 
-    public Restaurant(String email, String password, String name, String address, String contactNumber, String[] photos, Boolean acceptReservation, double creditAmount) {
+    public Restaurant(String email, String password, String name, String address, String contactNumber, String[] photos, Boolean acceptReservation, double creditAmount, String description) {
         super(email, password);
         this.name = name;
         this.address = address;
@@ -51,6 +52,7 @@ public class Restaurant extends User implements Serializable {
         this.photos = photos;
         this.acceptReservation = acceptReservation;
         this.creditAmount = creditAmount;
+        this.description = description;
     }
 
     
@@ -191,6 +193,14 @@ public class Restaurant extends User implements Serializable {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 }

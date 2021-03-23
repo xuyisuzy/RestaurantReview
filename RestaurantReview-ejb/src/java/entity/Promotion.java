@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +24,8 @@ public class Promotion implements Serializable {
     private String content;
     private String title;
     private String photo;
+    private Date startDate;
+    private Date endDate;
     
     @ManyToOne(optional = false)
     private Restaurant restaurant;
@@ -30,10 +33,12 @@ public class Promotion implements Serializable {
     public Promotion() {
     }
 
-    public Promotion(String content, String title, String photo) {
+    public Promotion(String content, String title, String photo, Date startDate, Date endDate) {
         this.content = content;
         this.title = title;
         this.photo = photo;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public Long getPromotionId() {
@@ -101,6 +106,22 @@ public class Promotion implements Serializable {
     @Override
     public String toString() {
         return "entity.Promotion[ id=" + promotionId + " ]";
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
     
 }

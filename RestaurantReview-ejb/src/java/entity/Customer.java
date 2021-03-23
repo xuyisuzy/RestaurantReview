@@ -21,6 +21,7 @@ public class Customer extends User implements Serializable {
     private Long firstName;
     private Long lastName;
     private String phoneNumber;
+    private Integer level;
     
     @OneToMany(mappedBy = "owner")
     private List<CreditCard> creditCards;
@@ -42,6 +43,7 @@ public class Customer extends User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+        this.level = 1;
     }
     
 
@@ -142,6 +144,14 @@ public class Customer extends User implements Serializable {
     @Override
     public String toString() {
         return "entity.Customer[ id=" + getId()+ " ]";
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
     
 }

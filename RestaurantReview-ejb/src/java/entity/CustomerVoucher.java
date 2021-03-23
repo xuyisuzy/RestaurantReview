@@ -28,6 +28,7 @@ public class CustomerVoucher implements Serializable {
     private Boolean redeemed;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date timestamp;
+    private String sixDigitCode;
     
     @ManyToOne(optional = false)
     private Customer owner;
@@ -39,9 +40,10 @@ public class CustomerVoucher implements Serializable {
     public CustomerVoucher() {
     }
 
-    public CustomerVoucher(Boolean redeemed, Date timestamp) {
+    public CustomerVoucher(Boolean redeemed, Date timestamp, String sixDigitCode) {
         this.redeemed = redeemed;
         this.timestamp = timestamp;
+        this.sixDigitCode = sixDigitCode;
     }
     
     
@@ -119,6 +121,14 @@ public class CustomerVoucher implements Serializable {
     @Override
     public String toString() {
         return "entity.CustomerVoucher[ id=" + customerVoucherId + " ]";
+    }
+
+    public String getSixDigitCode() {
+        return sixDigitCode;
+    }
+
+    public void setSixDigitCode(String sixDigitCode) {
+        this.sixDigitCode = sixDigitCode;
     }
     
 }
