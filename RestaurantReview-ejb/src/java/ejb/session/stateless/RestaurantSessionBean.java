@@ -5,7 +5,7 @@
  */
 package ejb.session.stateless;
 
-import entity.Customer;
+import entity.Restaurant;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
@@ -16,13 +16,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 import javax.validation.Validation;
+import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import util.exception.CustomerNotFoundException;
-import util.exception.CustomerUsernameExistException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
+import util.exception.RestaurantNotFoundException;
+import util.exception.RestaurantUsernameExistException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -30,7 +30,7 @@ import util.exception.UnknownPersistenceException;
  * @author fengyuan
  */
 @Stateless
-public class CustomerSessionBean implements CustomerSessionBeanLocal {
+public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
 
     @PersistenceContext(unitName = "RestaurantReview-ejbPU")
     private EntityManager em;
@@ -38,25 +38,28 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
     
-    public CustomerSessionBean()
+    public RestaurantSessionBean()
     {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
 
+    // Add business logic below. (Right-click in editor and choose
+    // "Insert Code > Add Business Method")
+    
     @Override
-    public Long createNewCustomer(Customer newCustomer) throws UnknownPersistenceException, InputDataValidationException, CustomerUsernameExistException
+    public Long createNewRestaurant(Restaurant newRestaurant) throws UnknownPersistenceException, InputDataValidationException, RestaurantUsernameExistException
     {
-        Set<ConstraintViolation<Customer>>constraintViolations = validator.validate(newCustomer);
+        Set<ConstraintViolation<Restaurant>>constraintViolations = validator.validate(newRestaurant);
         
         if(constraintViolations.isEmpty())
         {
             try
             {
-                em.persist(newCustomer);
+                em.persist(newRestaurant);
                 em.flush();
 
-                return newCustomer.getUseId();
+                return newRestaurant.getUseId();
             }
             catch(PersistenceException ex)
             {
@@ -64,7 +67,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
                 {
                     if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
                     {
-                        throw new CustomerUsernameExistException();
+                        throw new RestaurantUsernameExistException();
                     }
                     else
                     {
@@ -84,10 +87,10 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     }
     
     @Override
-    public List<Customer> retrieveAllCustomers()
+    public List<Restaurant> retrieveAllRestaurants()
     {
-        Query query = em.createQuery("SELECT c FROM Customer c ORDER BY c.useId ASC");        
-        List<Customer> customers = query.getResultList();
+        Query query = em.createQuery("SELECT r FROM Restaurant r ORDER BY r.useId ASC");        
+        List<Restaurant> restaurants = query.getResultList();
         
 //        for(Customer customer: customers)
 //        {
@@ -96,64 +99,64 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
 //            customer.getReviews();
 //        }
         
-        return customers;
+        return restaurants;
     }
     
     @Override
-    public Customer retrieveCustomerById(Long customerId) throws CustomerNotFoundException 
+    public Restaurant retrieveRestaurantById(Long restaurantId) throws RestaurantNotFoundException 
     {
-        Customer customer = em.find(Customer.class, customerId);
+        Restaurant restaurant = em.find(Restaurant.class, restaurantId);
         
-        if(customer != null)
+        if(restaurant != null)
         {
-            return customer;
+            return restaurant;
         }
         else
         {
-            throw new CustomerNotFoundException("Customer ID " + customerId + " does not exist!");
+            throw new RestaurantNotFoundException("Restaurant ID " + restaurantId + " does not exist!");
         }
     }
     
     @Override
-    public Customer retrieveCustomerByEmail(String email) throws CustomerNotFoundException
+    public Restaurant retrieveCustomerByEmail(String email) throws RestaurantNotFoundException
     {
-        Query query = em.createQuery("SELECT c FROM Customer c WHERE c.email = :inEmail");
+        Query query = em.createQuery("SELECT r FROM Restaurant r WHERE r.email = :inEmail");
         query.setParameter("inEmail", email);
         
         try
         {
-            return (Customer)query.getSingleResult();
+            return (Restaurant)query.getSingleResult();
         }
         catch(NoResultException | NonUniqueResultException ex)
         {
-            throw new CustomerNotFoundException("Customer with Email " + email + " does not exist!");
+            throw new RestaurantNotFoundException("Restaurant with Email " + email + " does not exist!");
         }
     }
     
     @Override
-    public Customer customerLogin(String username, String password) throws InvalidLoginCredentialException
+    public Restaurant restaurantLogin(String username, String password) throws InvalidLoginCredentialException
     {
         try
         {
-            Customer customer = retrieveCustomerByEmail(username);
+            Restaurant restaurant = retrieveCustomerByEmail(username);
             
-            if(customer.getPassword().equals(password))
+            if(restaurant.getPassword().equals(password))
             {
 //                customerEntity.getSaleTransactionEntities().size();                
-                return customer;
+                return restaurant;
             }
             else
             {
                 throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
             }
         }
-        catch(CustomerNotFoundException ex)
+        catch(RestaurantNotFoundException ex)
         {
             throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
         }
     }
     
-    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Customer>>constraintViolations)
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Restaurant>>constraintViolations)
     {
         String msg = "Input data validation error!:";
             
