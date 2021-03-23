@@ -8,10 +8,13 @@ package ejb.session.stateless;
 import entity.Restaurant;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.BankAccountNotFoundException;
+import util.exception.DishNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.RestaurantNotFoundException;
 import util.exception.RestaurantUsernameExistException;
+import util.exception.TableConfigurationNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -25,12 +28,15 @@ public interface RestaurantSessionBeanLocal {
 
     public List<Restaurant> retrieveAllRestaurants();
 
-    public Restaurant retrieveCustomerByEmail(String email) throws RestaurantNotFoundException;
-
     public Restaurant restaurantLogin(String username, String password) throws InvalidLoginCredentialException;
 
     public Restaurant retrieveRestaurantById(Long restaurantId) throws RestaurantNotFoundException;
 
     public List<Restaurant> searchRestaurantsByName(String searchString);
+
+    public Restaurant retrieveRestaurantByEmail(String email) throws RestaurantNotFoundException;
+
+    public void updateRestaurant(Restaurant restaurant, Long bankAccountId, Long tableConfigurationId, List<Long> dishIds, List<Long> reservationIds) 
+            throws RestaurantNotFoundException, InputDataValidationException, DishNotFoundException, BankAccountNotFoundException, TableConfigurationNotFoundException;
     
 }

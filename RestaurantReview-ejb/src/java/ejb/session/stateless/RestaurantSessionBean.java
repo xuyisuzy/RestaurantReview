@@ -5,9 +5,13 @@
  */
 package ejb.session.stateless;
 
+import entity.BankAccount;
+import entity.Dish;
 import entity.Restaurant;
+import entity.TableConfiguration;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -19,10 +23,13 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.BankAccountNotFoundException;
+import util.exception.DishNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.RestaurantNotFoundException;
 import util.exception.RestaurantUsernameExistException;
+import util.exception.TableConfigurationNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -32,6 +39,13 @@ import util.exception.UnknownPersistenceException;
 @Stateless
 public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
 
+    @EJB
+    private DishSessionBeanLocal dishSessionBeanLocal;
+    @EJB
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
+    @EJB
+    private TableConfigurationSessionBeanLocal tableConfigurationSessionBeanLocal;
+    
     @PersistenceContext(unitName = "RestaurantReview-ejbPU")
     private EntityManager em;
             
@@ -89,12 +103,14 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         Query query = em.createQuery("SELECT r FROM Restaurant r ORDER BY r.useId ASC");        
         List<Restaurant> restaurants = query.getResultList();
         
-//        for(Customer customer: customers)
-//        {
-//            customer.getCreditCards();
-//            customer.getCustomerVouchers();
-//            customer.getReviews();
-//        }
+        for(Restaurant restaurant: restaurants)
+        {
+            restaurant.getDishs().size();
+            restaurant.getPromotions().size();
+            restaurant.getReservations().size();
+            restaurant.getReviews().size();
+            restaurant.getTransactions().size();
+        }
         
         return restaurants;
     }
@@ -115,7 +131,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     }
     
     @Override
-    public Restaurant retrieveCustomerByEmail(String email) throws RestaurantNotFoundException
+    public Restaurant retrieveRestaurantByEmail(String email) throws RestaurantNotFoundException
     {
         Query query = em.createQuery("SELECT r FROM Restaurant r WHERE r.email = :inEmail");
         query.setParameter("inEmail", email);
@@ -137,10 +153,14 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         query.setParameter("inSearchString", "%" + searchString + "%");
         List<Restaurant> restaurants = query.getResultList();
         
-//        for(Restaurant restaurant:restaurants)
-//        {
-//
-//        }
+        for(Restaurant restaurant:restaurants)
+        {
+            restaurant.getDishs().size();
+            restaurant.getPromotions().size();
+            restaurant.getReservations().size();
+            restaurant.getReviews().size();
+            restaurant.getTransactions().size();
+        }
         
         return restaurants;
     }
@@ -150,7 +170,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     {
         try
         {
-            Restaurant restaurant = retrieveCustomerByEmail(username);
+            Restaurant restaurant = retrieveRestaurantByEmail(username);
             
             if(restaurant.getPassword().equals(password))
             {
@@ -165,6 +185,69 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         catch(RestaurantNotFoundException ex)
         {
             throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
+        }
+    }
+    
+    @Override
+    public void updateRestaurant(Restaurant restaurant, Long bankAccountId, Long tableConfigurationId, List<Long> dishIds, List<Long> reservationIds) 
+            throws RestaurantNotFoundException, InputDataValidationException, DishNotFoundException, BankAccountNotFoundException, TableConfigurationNotFoundException
+    {
+        if(restaurant != null && restaurant.getUseId()!= null)
+        {
+            Set<ConstraintViolation<Restaurant>>constraintViolations = validator.validate(restaurant);
+        
+            if(constraintViolations.isEmpty())
+            {
+                Restaurant restaurantToUpdate = retrieveRestaurantById(restaurant.getUseId());
+
+                if(bankAccountId != null && (!restaurantToUpdate.getBankAccount().getBankAccountId().equals(bankAccountId)))
+                {
+                    BankAccount bankAccountToUpdate = bankAccountSessionBeanLocal.retrieveBankAccountById(bankAccountId);
+                    restaurantToUpdate.setBankAccount(bankAccountToUpdate);
+                    bankAccountToUpdate.setRestaurant(restaurantToUpdate);
+                }
+                
+                if(tableConfigurationId != null && (!restaurantToUpdate.getTableConfiguration().getTableConfigurationId().equals(tableConfigurationId)))
+                {
+                    TableConfiguration tableConfigurationToUpdate = tableConfigurationSessionBeanLocal.retrieveTableConfigurationById(tableConfigurationId);
+                    restaurantToUpdate.setTableConfiguration(tableConfigurationToUpdate);
+                    tableConfigurationToUpdate.setRestaurant(restaurantToUpdate);
+                }
+
+                // Added in v5.1
+                if(dishIds != null)
+                {
+                    for(Dish dish:restaurantToUpdate.getDishs())
+                    {
+                        dish.setRestaurant(new Restaurant());
+                    }
+
+                    restaurantToUpdate.getDishs().clear();
+
+                    for(Long dishId:dishIds)
+                    {
+                        Dish dish = dishSessionBeanLocal.retrieveDishById(dishId);
+                        restaurantToUpdate.getDishs().add(dish);
+                    }
+                }
+                
+                restaurantToUpdate.setName(restaurant.getName());
+                restaurantToUpdate.setAddress(restaurant.getAddress());
+                restaurantToUpdate.setContactNumber(restaurant.getContactNumber());
+                restaurantToUpdate.setPhotos(restaurant.getPhotos());
+                restaurantToUpdate.setAcceptReservation(restaurant.getAcceptReservation());
+                restaurantToUpdate.setCreditAmount(restaurant.getCreditAmount());
+                restaurantToUpdate.setDescription(restaurant.getDescription());
+                
+            }
+            else
+            {
+                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            }
+        }
+        else
+        {
+            throw new RestaurantNotFoundException("Product ID not provided for product to be updated");
         }
     }
     

@@ -37,8 +37,6 @@ public class Reservation implements Serializable {
     private Restaurant restaurant;
     @OneToOne(optional = false)
     private Customer customer;
-    @OneToMany
-    private List<Dish> preOrderDishs;
 
     public Reservation() {
     }
@@ -116,15 +114,6 @@ public class Reservation implements Serializable {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
-
-    public List<Dish> getPreOrderDishs() {
-        return preOrderDishs;
-    }
-
-    public void setPreOrderDishs(List<Dish> preOrderDishs) {
-        this.preOrderDishs = preOrderDishs;
-    }
-    
     
 
     @Override
