@@ -43,9 +43,6 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
-
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
     
     @Override
     public Long createNewRestaurant(Restaurant newRestaurant) throws UnknownPersistenceException, InputDataValidationException, RestaurantUsernameExistException
@@ -131,6 +128,21 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         {
             throw new RestaurantNotFoundException("Restaurant with Email " + email + " does not exist!");
         }
+    }
+    
+    @Override
+    public List<Restaurant> searchRestaurantsByName(String searchString)
+    {
+        Query query = em.createQuery("SELECT r FROM Restaurant r WHERE r.name LIKE :inSearchString ORDER BY r.name ASC");
+        query.setParameter("inSearchString", "%" + searchString + "%");
+        List<Restaurant> restaurants = query.getResultList();
+        
+//        for(Restaurant restaurant:restaurants)
+//        {
+//
+//        }
+        
+        return restaurants;
     }
     
     @Override

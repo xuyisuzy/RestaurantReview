@@ -30,5 +30,7 @@ public interface RestaurantSessionBeanLocal {
     public Restaurant restaurantLogin(String username, String password) throws InvalidLoginCredentialException;
 
     public Restaurant retrieveRestaurantById(Long restaurantId) throws RestaurantNotFoundException;
+
+    public List<Restaurant> searchRestaurantsByName(String searchString);
     
 }

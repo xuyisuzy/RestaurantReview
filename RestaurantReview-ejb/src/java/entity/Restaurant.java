@@ -30,8 +30,8 @@ public class Restaurant extends User implements Serializable {
     private TableConfiguration tableConfiguration;
     @OneToMany(mappedBy = "restaurant")
     private List<Dish> dishs;
-    @OneToOne(mappedBy = "restaurant")
-    private Reservation reservation;
+    @OneToMany(mappedBy = "restaurant")
+    private List<Reservation> reservations;
     @OneToMany(mappedBy = "restaurant")
     private List<Promotion> promotions;
     @OneToMany(mappedBy = "restaurant")
@@ -134,14 +134,6 @@ public class Restaurant extends User implements Serializable {
         this.dishs = dishs;
     }
 
-    public Reservation getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
-    }
-
     public List<Promotion> getPromotions() {
         return promotions;
     }
@@ -191,6 +183,14 @@ public class Restaurant extends User implements Serializable {
     @Override
     public String toString() {
         return "entity.Restaurant[ id=" + this.getId() + " ]";
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
     
 }
