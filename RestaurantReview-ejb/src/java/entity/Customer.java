@@ -7,20 +7,31 @@ package entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
 public class Customer extends User implements Serializable {
 
+    @NotNull
+    @Column(nullable = false, length = 64)
     private Long firstName;
+    
+    @NotNull
+    @Column(nullable = false, length = 64)
     private Long lastName;
+    
+    @NotNull
+    @Column(nullable = false)
     private String phoneNumber;
+    
     private Integer level;
     
     @OneToMany(mappedBy = "owner")

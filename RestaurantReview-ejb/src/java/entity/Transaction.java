@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +18,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -26,7 +30,15 @@ public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionId;
+    
+    @NotNull
+    @Column(nullable = false)
+    @Digits(integer = 5, fraction = 2)
     private BigDecimal paidAmount;
+    
+    @NotNull
+    @Column(nullable = false)
+    @FutureOrPresent
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date transactionDate;
     
