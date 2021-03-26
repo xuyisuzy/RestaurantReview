@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -48,14 +49,18 @@ public class Review implements Serializable {
     
     @ManyToOne
     private Customer creater;
+    
     @ManyToOne
     private Restaurant restaurant;
-    @OneToMany(mappedBy = "review")
+    
+    @OneToMany(mappedBy = "originalReview")
     private List<Review> replies;
+    
     @ManyToOne
     private Review originalReview;
 
     public Review() {
+        replies = new ArrayList<>();
     }
 
     public Review(String content, Integer rating, String[] photos) {

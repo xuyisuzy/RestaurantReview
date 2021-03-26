@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -44,16 +45,21 @@ public class Transaction implements Serializable {
     
     @ManyToOne(optional = false)
     private Customer customer;
+    
     @ManyToOne(optional = false)
     private Restaurant restaurant;
+    
     @OneToOne
     private CreditCard creditCard;
+    
     @OneToOne
     private BankAccount bankAccount;
+    
     @OneToMany(mappedBy = "transaction")
     private List<CustomerVoucher> customerVouchers;
 
     public Transaction() {
+        customerVouchers = new ArrayList<>();
     }
 
     public Transaction(BigDecimal paidAmount, Date transactionDate) {
