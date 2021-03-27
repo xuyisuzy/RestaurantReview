@@ -6,52 +6,82 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Restaurant extends User implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
+    @NotNull
+    @Column(nullable = false)
     private String name;
+    
+    @NotNull
+    @Column(nullable = false)
     private String address;
+    
+    @NotNull
+    @Column(nullable = false)
     private String contactNumber;
+    
     private String[] photos;
+    
+    @NotNull
+    @Column(nullable = false)
     private Boolean acceptReservation;
+    
     private double creditAmount;
+    
     private String description;
     
     @OneToOne
     private BankAccount bankAccount;
+    
     @OneToOne
     private TableConfiguration tableConfiguration;
+    
     @OneToMany(mappedBy = "restaurant")
     private List<Dish> dishs;
+    
     @OneToMany(mappedBy = "restaurant")
     private List<Reservation> reservations;
+    
     @OneToMany(mappedBy = "restaurant")
     private List<Promotion> promotions;
+    
     @OneToMany(mappedBy = "restaurant")
     private List<Review> reviews;
+    
     @OneToMany(mappedBy = "restaurant")
     private List<Transaction> transactions;
     
     public Restaurant() {
-        
+        super();
+        dishs = new ArrayList<>();
+        reservations = new ArrayList<>();
+        promotions = new ArrayList<>();
+        reviews = new ArrayList<>();
+        transactions = new ArrayList<>();
     }
 
-    public Restaurant(String email, String password, String name, String address, String contactNumber, String[] photos, Boolean acceptReservation, double creditAmount, String description) {
+    public Restaurant(String email, String password, String name, String address, String contactNumber, Boolean acceptReservation, String description) {
         super(email, password);
         this.name = name;
         this.address = address;
         this.contactNumber = contactNumber;
-        this.photos = photos;
+        this.photos = new String[5];
         this.acceptReservation = acceptReservation;
-        this.creditAmount = creditAmount;
+        this.creditAmount = 0.0;
         this.description = description;
     }
 

@@ -6,11 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -20,8 +22,17 @@ public class TableConfiguration implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tableConfigurationId;
+    
+    @NotNull
+    @Column(nullable = false)
     private Integer numOfSmallTable;
+    
+    @NotNull
+    @Column(nullable = false)
     private Integer numOfMediumTable;
+    
+    @NotNull
+    @Column(nullable = false)
     private Integer numOfLargeTable;
 
     @OneToOne(mappedBy = "tableConfiguration", optional = true)

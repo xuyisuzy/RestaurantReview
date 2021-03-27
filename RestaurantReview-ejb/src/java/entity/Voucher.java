@@ -7,8 +7,10 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +18,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -25,19 +30,43 @@ public class Voucher implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long voucherId;
+    
+    @NotNull
+    @Column(nullable = false)
     private String title;
+    
+    @NotNull
+    @Column(nullable = false)
+    @FutureOrPresent
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date expiryDate;
+    
+    @NotNull
+    @Column(nullable = false)
+    @Digits(integer = 5, fraction = 2)
     private BigDecimal amountRedeemable;
+    
+    @NotNull
+    @Column(nullable = false)
+    @Digits(integer = 5, fraction = 2)
     private BigDecimal price;
+    
+    @NotNull
+    @Column(nullable = false)
     private Boolean validity;
+    
+    @NotNull
+    @Column(nullable = false)
     private String content;
+    
+    
     @OneToMany(mappedBy = "voucher")
     private List<CustomerVoucher> customerVouchers;
     
     
 
     public Voucher() {
+        customerVouchers = new ArrayList<>();
     }
 
     public Voucher(String title, Date expiryDate, BigDecimal amountRedeemable, BigDecimal price, Boolean validity, String content) {
