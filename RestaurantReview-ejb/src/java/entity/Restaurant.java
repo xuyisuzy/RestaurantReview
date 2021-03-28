@@ -78,6 +78,7 @@ public class Restaurant extends User implements Serializable {
     @OneToOne
     private TableConfiguration tableConfiguration;
     
+    
     @OneToMany(mappedBy = "restaurant")
     private List<Dish> dishs;
     

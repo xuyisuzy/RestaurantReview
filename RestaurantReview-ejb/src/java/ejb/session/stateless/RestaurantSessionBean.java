@@ -210,8 +210,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
                 if(tableConfigurationId != null && (!restaurantToUpdate.getTableConfiguration().getTableConfigurationId().equals(tableConfigurationId)))
                 {
                     TableConfiguration tableConfigurationToUpdate = tableConfigurationSessionBeanLocal.retrieveTableConfigurationById(tableConfigurationId);
-                    restaurantToUpdate.setTableConfiguration(tableConfigurationToUpdate);
-                    tableConfigurationToUpdate.setRestaurant(restaurantToUpdate);
+                    restaurantToUpdate.setTableConfiguration(tableConfigurationToUpdate);                    
                 }
 
                 // Added in v5.1
