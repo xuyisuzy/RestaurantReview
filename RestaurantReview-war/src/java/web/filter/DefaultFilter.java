@@ -5,6 +5,7 @@
  */
 package web.filter;
 
+import entity.Restaurant;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -16,6 +17,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -24,15 +28,17 @@ import javax.servlet.annotation.WebFilter;
 @WebFilter(filterName = "DefaultFilter", urlPatterns = {"/*"})
 public class DefaultFilter implements Filter {
     
-    private static final boolean debug = true;
-
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
-    private FilterConfig filterConfig = null;
+    private FilterConfig filterConfig;
     
-    public DefaultFilter() {
-    }    
+    private static final String CONTEXT_ROOT = "/RestaurantReview-war";
+    
+    public void init(FilterConfig filterConfig) throws ServletException
+    {
+        this.filterConfig = filterConfig;
+    }
     
     
 
@@ -51,8 +57,46 @@ public class DefaultFilter implements Filter {
         
         System.out.println("**********DefaultFilter.doFilter");
         
-        chain.doFilter(request, response);
+        HttpServletRequest httpServletRequest = (HttpServletRequest)request;
+        HttpServletResponse httpServletResponse = (HttpServletResponse)response;
+        HttpSession httpSession = httpServletRequest.getSession(true);
+        
+        String requestServletPath = httpServletRequest.getServletPath();
+        
+        if(httpSession.getAttribute("isLogin") == null)
+        {
+            httpSession.setAttribute("isLogin", false);
+        }
+        
+        Boolean isLogin = (Boolean)httpSession.getAttribute("isLogin");
+        
+        if(!excludeLoginCheck(requestServletPath))
+        {
+            if(isLogin == true)
+            {
+                Restaurant currentRestaurant = (Restaurant)httpSession.getAttribute("currentRestaurant");
+                
+            }
+        }
+        else
+        {
+            chain.doFilter(request, response);
+        }
+        
     }
 
     
+    private Boolean excludeLoginCheck(String path)
+    {
+        if(path.equals("/index.xhtml") || 
+                path.equals("/accessRightError.xhtml") || 
+                path.startsWith("/javax.faces.resources"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }                
+    }
 }
