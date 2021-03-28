@@ -11,6 +11,8 @@ import entity.Restaurant;
 import entity.TableConfiguration;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,6 +31,7 @@ import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.RestaurantNotFoundException;
 import util.exception.RestaurantUsernameExistException;
+import util.exception.TableConfigurationExistException;
 import util.exception.TableConfigurationNotFoundException;
 import util.exception.UnknownPersistenceException;
 
@@ -59,15 +62,18 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     }
     
     @Override
-    public Long createNewRestaurant(Restaurant newRestaurant) throws UnknownPersistenceException, InputDataValidationException, RestaurantUsernameExistException
+    public Long createNewRestaurant(Restaurant newRestaurant, TableConfiguration newTableConfiguration) throws UnknownPersistenceException, InputDataValidationException, RestaurantUsernameExistException, TableConfigurationExistException
     {
-        Set<ConstraintViolation<Restaurant>>constraintViolations = validator.validate(newRestaurant);
+        Set<ConstraintViolation<Restaurant>> constraintViolations = validator.validate(newRestaurant);
         
         if(constraintViolations.isEmpty())
         {
             try
             {
                 em.persist(newRestaurant);
+                tableConfigurationSessionBeanLocal.createNewTableConfiguration(newTableConfiguration);
+                newRestaurant.setTableConfiguration(newTableConfiguration);
+                
                 em.flush();
 
                 return newRestaurant.getUseId();

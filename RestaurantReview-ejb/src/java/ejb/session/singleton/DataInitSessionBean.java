@@ -19,6 +19,7 @@ import javax.persistence.PersistenceContext;
 import util.exception.CustomerUsernameExistException;
 import util.exception.InputDataValidationException;
 import util.exception.RestaurantUsernameExistException;
+import util.exception.TableConfigurationExistException;
 import util.exception.UnknownPersistenceException;
 
 
@@ -73,10 +74,10 @@ public class DataInitSessionBean {
     {
         try
         {
-            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("restone@test.com", "password", "Restaurant One", "kent Ridge 1", "66666666", false, "This is test Restaurant One"));
-            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("resttwo@test.com", "password", "Restaurant Two", "kent Ridge 2", "77777777", false, "This is test Restaurant Two"));
+            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("restone@test.com", "password", "Restaurant One", "kent Ridge 1", "66666666", false, "This is test Restaurant One"), null);
+            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("resttwo@test.com", "password", "Restaurant Two", "kent Ridge 2", "77777777", false, "This is test Restaurant Two"), null);
         }
-        catch (UnknownPersistenceException | InputDataValidationException | RestaurantUsernameExistException ex)
+        catch (UnknownPersistenceException | InputDataValidationException | RestaurantUsernameExistException | TableConfigurationExistException ex)
         {
             ex.printStackTrace();
         }
