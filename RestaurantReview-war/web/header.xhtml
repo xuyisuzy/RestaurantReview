@@ -22,7 +22,9 @@
                 &nbsp;
                 <p:commandButton type="reset" value="Clear" icon="pi pi-undo" />&nbsp;
                 <p:commandButton type="submit" value="Login" actionListener="#{loginManagedBean.login}" icon="pi pi-sign-in" />&nbsp;
-                <p:commandButton type="button" value="Register" icon="pi pi-user-plus" />
+                <p:commandButton type="button" value="Register" icon="pi pi-user-plus" action="register.xhtml?faces-redirect=true">
+                    <f:ajax />
+                </p:commandButton>
                 
                 <p:growl>
                     <p:autoUpdate />

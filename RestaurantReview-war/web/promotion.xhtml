@@ -10,7 +10,7 @@
         
         <h1>View My Promotions</h1>
         
-        <h:form id="formAllPromotions">
+        <h:form id="formAllPromotions" rendered="#{sessionScope.isLogin == true}">
             
             <p:messages id="messages" redisplay="false" closable="true" />
 
