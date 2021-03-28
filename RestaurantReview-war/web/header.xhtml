@@ -11,7 +11,7 @@
 
             <h:form id="loginForm">
                 <p:outputLabel for="email" value="Email" />&nbsp;
-                <p:inputText id="email" value="#{loginManagedBean.email}" size="32" required="true" requiredMessage="Email is required" maxlength="128">
+                <p:inputText id="email" value="#{loginManagedBean.email}" widgetVar="email" size="32" required="true" requiredMessage="Email is required" maxlength="128">
                     <f:validateLength minimum="4" />
                 </p:inputText>
                 &nbsp;
@@ -28,10 +28,9 @@
                     <p:autoUpdate />
                 </p:growl>
                 
-                
             </h:form>
             
-            
+                        
         </h:panelGroup>
         
         

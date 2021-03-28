@@ -90,7 +90,7 @@ public class DefaultFilter implements Filter {
     {
         if(path.equals("/index.xhtml") || 
                 path.equals("/accessRightError.xhtml") || 
-                path.startsWith("/javax.faces.resources"))
+                path.startsWith("/javax.faces.resource"))
         {
             return true;
         }
