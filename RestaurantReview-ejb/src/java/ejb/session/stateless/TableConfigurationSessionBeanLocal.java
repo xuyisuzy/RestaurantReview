@@ -20,7 +20,7 @@ import util.exception.UnknownPersistenceException;
 @Local
 public interface TableConfigurationSessionBeanLocal {
 
-    public TableConfiguration createNewTableConfiguration(TableConfiguration newTableConfiguration) throws UnknownPersistenceException, InputDataValidationException, TableConfigurationExistException;
+    public Long createNewTableConfiguration(TableConfiguration newTableConfiguration) throws UnknownPersistenceException, InputDataValidationException, TableConfigurationExistException;
 
     public List<TableConfiguration> retrieveAllTableConfigurations();
 

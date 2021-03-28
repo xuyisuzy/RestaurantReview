@@ -43,7 +43,7 @@ public class TableConfigurationSessionBean implements TableConfigurationSessionB
     }
     
     @Override
-    public TableConfiguration createNewTableConfiguration(TableConfiguration newTableConfiguration) 
+    public Long createNewTableConfiguration(TableConfiguration newTableConfiguration) 
             throws UnknownPersistenceException, InputDataValidationException, TableConfigurationExistException
     {
         Set<ConstraintViolation<TableConfiguration>>constraintViolations = validator.validate(newTableConfiguration);
@@ -55,7 +55,7 @@ public class TableConfigurationSessionBean implements TableConfigurationSessionB
                 em.persist(newTableConfiguration);
                 em.flush();
 
-                return newTableConfiguration;
+                return newTableConfiguration.getTableConfigurationId();
             }
             catch(PersistenceException ex)
             {

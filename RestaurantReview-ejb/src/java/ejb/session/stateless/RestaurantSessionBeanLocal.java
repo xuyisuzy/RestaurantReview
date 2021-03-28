@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Restaurant;
+import entity.TableConfiguration;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.BankAccountNotFoundException;
@@ -14,6 +15,7 @@ import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.RestaurantNotFoundException;
 import util.exception.RestaurantUsernameExistException;
+import util.exception.TableConfigurationExistException;
 import util.exception.TableConfigurationNotFoundException;
 import util.exception.UnknownPersistenceException;
 
@@ -24,7 +26,7 @@ import util.exception.UnknownPersistenceException;
 @Local
 public interface RestaurantSessionBeanLocal {
 
-    public Long createNewRestaurant(Restaurant newRestaurant) throws UnknownPersistenceException, InputDataValidationException, RestaurantUsernameExistException;
+    public Long createNewRestaurant(Restaurant newRestaurant, TableConfiguration newTableConfiguration) throws UnknownPersistenceException, InputDataValidationException, RestaurantUsernameExistException, TableConfigurationExistException;
 
     public List<Restaurant> retrieveAllRestaurants();
 

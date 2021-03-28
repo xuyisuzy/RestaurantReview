@@ -7,6 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
+    
     <h:head>
         <title>Restaurant Review</title>
         <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
@@ -18,7 +19,6 @@
             
             <p:layoutUnit position="north" size="120">
             
-                <h1>Restaurant Review</h1>
 
                 <ui:insert name="header">
                     <ui:include src="/header.xhtml" />
@@ -40,13 +40,6 @@
                 
             </p:layoutUnit>
             
-            <p:layoutUnit minSize="200" position="east" header="Advertisements" collapsible="true" collapsed="true">
-                
-                <ui:insert name="sidebar">
-                    <ui:include src="/sidebar.xhtml" />
-                </ui:insert>        
-                
-            </p:layoutUnit>
             
             <p:layoutUnit position="south" size="70" >
                 
