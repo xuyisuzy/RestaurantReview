@@ -35,8 +35,6 @@ public class TableConfiguration implements Serializable {
     @Column(nullable = false)
     private Integer numOfLargeTable;
 
-    @OneToOne(mappedBy = "tableConfiguration", optional = true)
-    private Restaurant restaurant;
 
     public TableConfiguration() {
     }
@@ -80,16 +78,6 @@ public class TableConfiguration implements Serializable {
     public void setNumOfLargeTable(Integer numOfLargeTable) {
         this.numOfLargeTable = numOfLargeTable;
     }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
-    
-    
 
     @Override
     public int hashCode() {
