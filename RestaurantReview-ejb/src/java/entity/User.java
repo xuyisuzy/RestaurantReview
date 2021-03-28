@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 
@@ -26,8 +27,9 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long useId;
     
-    @Column(nullable = false, length = 128)
+    @Column(nullable = false, unique = true, length = 128)
     @NotNull
+    @Email
     private String email;
     
     @Column(nullable = false, length = 32)

@@ -36,6 +36,16 @@ public class RestaurantRegisterManagedBean {
 
     private Restaurant newRestaurant;
     private TableConfiguration newTableConfiguration; 
+    private Boolean reservationStatus = false;
+    
+//    public void setTableConfig()
+//    {
+//        System.out.println("Set table Config!!!");
+//        if (reservationStatus == false)
+//                reservationStatus = true;
+//        else
+//            reservationStatus = false;
+//    }
     
     public RestaurantRegisterManagedBean() {
         newRestaurant = new Restaurant();
@@ -44,6 +54,7 @@ public class RestaurantRegisterManagedBean {
     
     public void createNewRestaurant(ActionEvent event) throws IOException {
         try {
+//            newRestaurant.setAcceptReservation(getReservationStatus());
             Long newRestaurantId = restaurantSessionBeanLocal.createNewRestaurant(getNewRestaurant(), getNewTableConfiguration());
             getNewRestaurant().setUseId(newRestaurantId);
             
@@ -69,6 +80,12 @@ public class RestaurantRegisterManagedBean {
         this.newTableConfiguration = newTableConfiguration;
     }
     
-    
+    public Boolean getReservationStatus() {
+        return reservationStatus;
+    }
+
+    public void setReservationStatus(Boolean reservationStatus) {
+        this.reservationStatus = reservationStatus;
+    }
     
 }

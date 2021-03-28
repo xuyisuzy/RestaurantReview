@@ -7,40 +7,18 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Restaurant extends User implements Serializable {
-
-    public Date getOpenTime()
-    {
-        return openTime;
-    }
-
-    public void setOpenTime(Date openTime)
-    {
-        this.openTime = openTime;
-    }
-
-    public Date getCloseTime()
-    {
-        return closeTime;
-    }
-
-    public void setCloseTime(Date closeTime)
-    {
-        this.closeTime = closeTime;
-    }
 
     private static final long serialVersionUID = 1L;
     
@@ -54,6 +32,12 @@ public class Restaurant extends User implements Serializable {
     
     @NotNull
     @Column(nullable = false)
+    @Size(max = 6, min = 6)
+    private String postalCode;
+    
+    @NotNull
+    @Column(nullable = false)
+    @Size(max = 8, min = 8)
     private String contactNumber;
     
     private String[] photos;
@@ -62,11 +46,13 @@ public class Restaurant extends User implements Serializable {
     @Column(nullable = false)
     private Boolean acceptReservation;
     
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date openTime;
+    @Max(23)
+    @Min(0)
+    private Integer openTime;
     
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date closeTime;
+    @Max(23)
+    @Min(0)
+    private Integer closeTime;
     
     private double creditAmount;
     
@@ -75,7 +61,7 @@ public class Restaurant extends User implements Serializable {
     @OneToOne
     private BankAccount bankAccount;
     
-    @OneToOne
+    @OneToOne(optional = true)
     private TableConfiguration tableConfiguration;
     
     
@@ -101,6 +87,9 @@ public class Restaurant extends User implements Serializable {
         promotions = new ArrayList<>();
         reviews = new ArrayList<>();
         transactions = new ArrayList<>();
+        acceptReservation = Boolean.TRUE;
+        this.photos = new String[5];
+        this.creditAmount = 0.0;
     }
 
     public Restaurant(String email, String password, String name, String address, String contactNumber, Boolean acceptReservation, String description) {
@@ -219,7 +208,25 @@ public class Restaurant extends User implements Serializable {
         this.transactions = transactions;
     }
     
-    
+    public Integer getOpenTime()
+    {
+        return openTime;
+    }
+
+    public void setOpenTime(Integer openTime)
+    {
+        this.openTime = openTime;
+    }
+
+    public Integer getCloseTime()
+    {
+        return closeTime;
+    }
+
+    public void setCloseTime(Integer closeTime)
+    {
+        this.closeTime = closeTime;
+    }
 
     @Override
     public int hashCode() {
@@ -261,5 +268,15 @@ public class Restaurant extends User implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+    
+    
     
 }
