@@ -50,10 +50,10 @@ public class DataInitSessionBean {
         {
             initializeCustomerData();
         }
-        if(em.find(Restaurant.class, 3l) == null)
-        {
-            initializeRestaurantData();
-        }
+//        if(em.find(Restaurant.class, 3l) == null)
+//        {
+//            initializeRestaurantData();
+//        }
             
     }
     
