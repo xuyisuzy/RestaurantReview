@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,10 +16,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 
 @Entity
 public class Restaurant extends User implements Serializable {
+
+    public Date getOpenTime()
+    {
+        return openTime;
+    }
+
+    public void setOpenTime(Date openTime)
+    {
+        this.openTime = openTime;
+    }
+
+    public Date getCloseTime()
+    {
+        return closeTime;
+    }
+
+    public void setCloseTime(Date closeTime)
+    {
+        this.closeTime = closeTime;
+    }
 
     private static final long serialVersionUID = 1L;
     
@@ -39,6 +61,12 @@ public class Restaurant extends User implements Serializable {
     @NotNull
     @Column(nullable = false)
     private Boolean acceptReservation;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date openTime;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date closeTime;
     
     private double creditAmount;
     
