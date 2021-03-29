@@ -7,12 +7,16 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -22,13 +26,28 @@ public class CreditCard implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long creditCardId;
+    
+    @NotNull
+    @Column(nullable = false, length = 16)
     private String cardNumber;
+    
+    @NotNull
+    @Column(nullable = false, length = 3)
     private String cvv;
+    
+    @NotNull
+    @Column(nullable = false)
+    @FutureOrPresent
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date expiryDate;
+    
+    @NotNull
+    @Column(nullable = false, length = 128)
     private String nameOnCard;
     
     @ManyToOne(optional = false)
     private Customer owner;
+    
     @OneToOne(mappedBy = "creditCard")
     private Transaction transaction;
 

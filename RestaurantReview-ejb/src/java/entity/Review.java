@@ -6,14 +6,20 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -23,22 +29,38 @@ public class Review implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
+    
+    @NotNull
+    @Column(nullable = false)
     private String content;
+    
+    @NotNull
+    @Column(nullable = false)
+    @Digits(integer = 1, fraction = 0)
     private Integer rating;
+    
     private String[] photos;
+    
     private Integer numOfLikes;
+    
+    @FutureOrPresent
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date timeStamp;
     
     @ManyToOne
     private Customer creater;
+    
     @ManyToOne
     private Restaurant restaurant;
-    @OneToMany(mappedBy = "review")
+    
+    @OneToMany(mappedBy = "originalReview")
     private List<Review> replies;
+    
     @ManyToOne
     private Review originalReview;
 
     public Review() {
+        replies = new ArrayList<>();
     }
 
     public Review(String content, Integer rating, String[] photos) {

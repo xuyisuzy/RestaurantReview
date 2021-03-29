@@ -6,39 +6,62 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
 public class Customer extends User implements Serializable {
 
-    private Long firstName;
-    private Long lastName;
+    private static final long serialVersionUID = 1L;
+    
+    @NotNull
+    @Column(nullable = false, length = 64)
+    private String firstName;
+    
+    @NotNull
+    @Column(nullable = false, length = 64)
+    private String lastName;
+    
+    @NotNull
+    @Column(nullable = false)
     private String phoneNumber;
+    
     private Integer level;
     
     @OneToMany(mappedBy = "owner")
     private List<CreditCard> creditCards;
+    
     @OneToOne(mappedBy = "customer")
     private Reservation reservation;
+    
     @OneToMany(mappedBy = "creater")
     private List<Review> reviews;
+    
     @OneToMany(mappedBy = "customer")
     private List<Transaction> transactions;
+    
     @OneToMany(mappedBy = "owner")
     private List<CustomerVoucher> customerVouchers;
 
     public Customer() {
+        super();
+        creditCards = new ArrayList<>();
+        reviews = new ArrayList<>();
+        transactions =  new ArrayList<>();
+        customerVouchers = new ArrayList<>();
     }
 
 
-    public Customer(String email, String password, Long firstName, Long lastName, String phoneNumber, Long useId) {
+    public Customer(String email, String password, String firstName, String lastName, String phoneNumber) {
         super(email, password);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,19 +78,19 @@ public class Customer extends User implements Serializable {
         super.setUseId(id);
     }
 
-    public Long getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(Long firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public Long getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(Long lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 

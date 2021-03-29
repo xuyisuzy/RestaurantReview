@@ -6,52 +6,100 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Restaurant extends User implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
+    @NotNull
+    @Column(nullable = false)
     private String name;
+    
+    @NotNull
+    @Column(nullable = false)
     private String address;
+    
+    @NotNull
+    @Column(nullable = false)
+    @Size(max = 6, min = 6)
+    private String postalCode;
+    
+    @NotNull
+    @Column(nullable = false)
+    @Size(max = 8, min = 8)
     private String contactNumber;
+    
     private String[] photos;
+    
+    @NotNull
+    @Column(nullable = false)
     private Boolean acceptReservation;
+    
+    @Max(23)
+    @Min(0)
+    private Integer openTime;
+    
+    @Max(23)
+    @Min(0)
+    private Integer closeTime;
+    
     private double creditAmount;
+    
     private String description;
     
     @OneToOne
     private BankAccount bankAccount;
-    @OneToOne
+    
+    @OneToOne(optional = true)
     private TableConfiguration tableConfiguration;
+    
+    
     @OneToMany(mappedBy = "restaurant")
     private List<Dish> dishs;
+    
     @OneToMany(mappedBy = "restaurant")
     private List<Reservation> reservations;
+    
     @OneToMany(mappedBy = "restaurant")
     private List<Promotion> promotions;
+    
     @OneToMany(mappedBy = "restaurant")
     private List<Review> reviews;
+    
     @OneToMany(mappedBy = "restaurant")
     private List<Transaction> transactions;
     
     public Restaurant() {
-        
+        super();
+        dishs = new ArrayList<>();
+        reservations = new ArrayList<>();
+        promotions = new ArrayList<>();
+        reviews = new ArrayList<>();
+        transactions = new ArrayList<>();
+        acceptReservation = Boolean.TRUE;
+        this.photos = new String[5];
+        this.creditAmount = 0.0;
     }
 
-    public Restaurant(String email, String password, String name, String address, String contactNumber, String[] photos, Boolean acceptReservation, double creditAmount, String description) {
+    public Restaurant(String email, String password, String name, String address, String contactNumber, Boolean acceptReservation, String description) {
         super(email, password);
         this.name = name;
         this.address = address;
         this.contactNumber = contactNumber;
-        this.photos = photos;
+        this.photos = new String[5];
         this.acceptReservation = acceptReservation;
-        this.creditAmount = creditAmount;
+        this.creditAmount = 0.0;
         this.description = description;
     }
 
@@ -160,7 +208,25 @@ public class Restaurant extends User implements Serializable {
         this.transactions = transactions;
     }
     
-    
+    public Integer getOpenTime()
+    {
+        return openTime;
+    }
+
+    public void setOpenTime(Integer openTime)
+    {
+        this.openTime = openTime;
+    }
+
+    public Integer getCloseTime()
+    {
+        return closeTime;
+    }
+
+    public void setCloseTime(Integer closeTime)
+    {
+        this.closeTime = closeTime;
+    }
 
     @Override
     public int hashCode() {
@@ -202,5 +268,15 @@ public class Restaurant extends User implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+    
+    
     
 }

@@ -29,6 +29,7 @@ import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.RestaurantNotFoundException;
 import util.exception.RestaurantUsernameExistException;
+import util.exception.TableConfigurationExistException;
 import util.exception.TableConfigurationNotFoundException;
 import util.exception.UnknownPersistenceException;
 
@@ -59,15 +60,20 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     }
     
     @Override
-    public Long createNewRestaurant(Restaurant newRestaurant) throws UnknownPersistenceException, InputDataValidationException, RestaurantUsernameExistException
+    public Long createNewRestaurant(Restaurant newRestaurant, TableConfiguration newTableConfiguration) throws UnknownPersistenceException, InputDataValidationException, RestaurantUsernameExistException, TableConfigurationExistException
     {
-        Set<ConstraintViolation<Restaurant>>constraintViolations = validator.validate(newRestaurant);
+        Set<ConstraintViolation<Restaurant>> constraintViolations = validator.validate(newRestaurant);
         
         if(constraintViolations.isEmpty())
         {
             try
             {
                 em.persist(newRestaurant);
+                if (newRestaurant.getAcceptReservation() == Boolean.TRUE) {
+                    tableConfigurationSessionBeanLocal.createNewTableConfiguration(newTableConfiguration);
+                    newRestaurant.setTableConfiguration(newTableConfiguration);
+                }
+                
                 em.flush();
 
                 return newRestaurant.getUseId();
@@ -210,8 +216,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
                 if(tableConfigurationId != null && (!restaurantToUpdate.getTableConfiguration().getTableConfigurationId().equals(tableConfigurationId)))
                 {
                     TableConfiguration tableConfigurationToUpdate = tableConfigurationSessionBeanLocal.retrieveTableConfigurationById(tableConfigurationId);
-                    restaurantToUpdate.setTableConfiguration(tableConfigurationToUpdate);
-                    tableConfigurationToUpdate.setRestaurant(restaurantToUpdate);
+                    restaurantToUpdate.setTableConfiguration(tableConfigurationToUpdate);                    
                 }
 
                 // Added in v5.1

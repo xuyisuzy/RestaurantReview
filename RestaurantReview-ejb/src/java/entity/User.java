@@ -6,20 +6,34 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long useId;
+    
+    @Column(nullable = false, unique = true, length = 128)
+    @NotNull
+    @Email
     private String email;
+    
+    @Column(nullable = false, length = 32)
+    @NotNull
     private String password;
 
     public User() {

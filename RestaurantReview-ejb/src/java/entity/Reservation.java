@@ -8,13 +8,19 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import util.enumeration.TableSize;
 
 
@@ -25,12 +31,30 @@ public class Reservation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
+    
+    @NotNull
+    @Column(nullable = false)
+    @FutureOrPresent
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date reservationTime;
+    
+    @NotNull
+    @FutureOrPresent
+    @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date timetstamp;
+    
+    @NotNull
+    @Column(nullable = false )
+    @Digits(integer = 2, fraction = 0)
     private Integer numOfPax;
+    
+    @NotNull
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private TableSize tableSizeAssigned;
+    
+    
     private String remark;
     
     @OneToOne(optional = false)

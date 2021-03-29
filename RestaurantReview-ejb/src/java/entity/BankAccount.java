@@ -6,11 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -23,12 +25,22 @@ public class BankAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bankAccountId;
+    
+    @NotNull
+    @Column(nullable = false, length = 64)
     private String bankAccountNumber;
+    
+    @NotNull
+    @Column(nullable = false, length = 128)
     private String nameOfBank;
+    
+    @NotNull
+    @Column(nullable = false, length = 128)
     private String nameOfOwner;
     
     @OneToOne(mappedBy = "bankAccount", optional = false)
     private Restaurant restaurant;
+    
     @OneToOne(mappedBy = "bankAccount")
     private Transaction transaction;
 
