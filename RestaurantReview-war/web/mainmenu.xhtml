@@ -10,9 +10,23 @@
 
             <p:menu style="width:200px;">	
                 
-                <p:menuitem value ="Home" outcome="/index.xhtml" icon="pi pi-home"/>
-                <p:menuitem value="View Promotions" outcome="/promotion.xhtml" icon="pi pi-tag"/>
-                <p:menuitem value="View My Restaurant Information" outcome="/restaurantInformation.xhtml" icon="pi pi-tag"/>
+                <p:submenu label="System">
+                    <p:menuitem value ="Home" outcome="/index.xhtml" icon="pi pi-home"/>                   
+                </p:submenu>
+                
+                <p:submenu label="Account">
+                    <p:menuitem value="View Account Details" outcome="/restaurantInformation.xhtml" icon="pi pi-id-card"/>
+                    <p:menuitem value="View Dishse" outcome="/restaurantInformation.xhtml" icon="pi pi-tags"/>
+                    <p:menuitem value="Change Password" outcome="/restaurantInformation.xhtml" icon="pi pi-lock"/>
+                    
+                </p:submenu>
+                
+                <p:submenu label="Operation">
+                    <p:menuitem value="View Reservations" outcome="/promotion.xhtml" icon="pi pi-calendar"/>
+                    <p:menuitem value="View Promotions" outcome="/promotion.xhtml" icon="pi pi-tag" />
+                </p:submenu>
+                
+                
 
             </p:menu>
         </h:form>

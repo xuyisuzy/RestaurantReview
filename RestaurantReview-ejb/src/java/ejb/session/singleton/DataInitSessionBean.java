@@ -6,9 +6,12 @@
 package ejb.session.singleton;
 
 import ejb.session.stateless.CustomerSessionBeanLocal;
+import ejb.session.stateless.ReservationSessionBeanLocal;
 import ejb.session.stateless.RestaurantSessionBeanLocal;
+import ejb.session.stateless.TableConfigurationSessionBeanLocal;
 import entity.Customer;
 import entity.Restaurant;
+import entity.TableConfiguration;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -27,6 +30,9 @@ import util.exception.UnknownPersistenceException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB
+    private ReservationSessionBeanLocal reservationSessionBeanLocal;
     
     @PersistenceContext(unitName = "RestaurantReview-ejbPU")
     private EntityManager em;
@@ -39,7 +45,10 @@ public class DataInitSessionBean {
 
     @EJB
     private CustomerSessionBeanLocal customerSessionBeanLocal;
-
+    
+    
+    @EJB
+    private TableConfigurationSessionBeanLocal tableConfigurationSessionBeanLocal;
     
     
     
@@ -50,10 +59,10 @@ public class DataInitSessionBean {
         {
             initializeCustomerData();
         }
-//        if(em.find(Restaurant.class, 3l) == null)
-//        {
-//            initializeRestaurantData();
-//        }
+        if(em.find(Restaurant.class, 3l) == null)
+        {
+            initializeRestaurantData();
+        }
             
     }
     
@@ -61,8 +70,8 @@ public class DataInitSessionBean {
     {
         try
         {
-            customerSessionBeanLocal.createNewCustomer(new Customer("custone@test.com", "password", "Custoemr", "One", "12345678"));
-            customerSessionBeanLocal.createNewCustomer(new Customer("custotwo@test.com", "password", "Custoemr", "Two", "87654321"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("custone@test.com", "password", "Customer", "One", "12345678"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("custotwo@test.com", "password", "Customer", "Two", "87654321"));
         }
         catch(UnknownPersistenceException | InputDataValidationException | CustomerUsernameExistException ex)
         {
@@ -74,13 +83,19 @@ public class DataInitSessionBean {
     {
         try
         {
-            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("restone@test.com", "password", "Restaurant One", "kent Ridge 1", "66666666", false, "This is test Restaurant One"), null);
-            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("resttwo@test.com", "password", "Restaurant Two", "kent Ridge 2", "77777777", false, "This is test Restaurant Two"), null);
+            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("restone@test.com", "password", "Restaurant One", "kent Ridge 1","111111", "66666666", false, "This is test Restaurant One", 8, 23), null);
+            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("resttwo@test.com", "password", "Restaurant Two", "kent Ridge 2","111111", "77777777", true, "This is test Restaurant Two", 9, 22), new TableConfiguration(2,3,4));
         }
         catch (UnknownPersistenceException | InputDataValidationException | RestaurantUsernameExistException | TableConfigurationExistException ex)
         {
             ex.printStackTrace();
         }
+    }
+    
+    private void initializeReservationData()
+    {
+
+        
     }
 
 //    public void persist(Object object)

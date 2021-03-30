@@ -59,6 +59,7 @@ public class Reservation implements Serializable {
     
     @OneToOne(optional = false)
     private Restaurant restaurant;
+    
     @OneToOne(optional = false)
     private Customer customer;
 
