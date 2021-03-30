@@ -9,7 +9,6 @@ import ejb.session.stateless.PromotionSessionBeanLocal;
 import entity.Promotion;
 import entity.Restaurant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -19,7 +18,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import util.exception.CreateNewPromotionException;
-import util.exception.DeletePromotionException;
 import util.exception.InputDataValidationException;
 import util.exception.PromotionExistException;
 import util.exception.PromotionNotFoundException;
@@ -47,7 +45,6 @@ public class PromotionManagedBean {
     public PromotionManagedBean() 
     {
         newPromotion = new Promotion();
-        promotions = new ArrayList<>();
     }
     
     @PostConstruct
@@ -80,12 +77,18 @@ public class PromotionManagedBean {
         }
     }   
     
+    public void doUpdatePromotion(ActionEvent event)
+    {
+        promotionToUpdate = (Promotion)event.getComponent().getAttributes().get("promotionToUpdate");
+        System.out.println(promotionToUpdate.getTitle());
+    }
     
     public void updatePromotion(ActionEvent event)
     {        
         try
         {
-            promotionSessionBeanLocal.updatePromotion(getPromotionToUpdate());
+            System.out.println(promotionToUpdate.getTitle());
+            promotionSessionBeanLocal.updatePromotion(promotionToUpdate);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Promotion updated successfully", null));
         }
