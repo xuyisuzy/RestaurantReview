@@ -28,6 +28,7 @@
                 <p:inputText id="email" value="#{restaurantRegisterManagedBean.newRestaurant.email}" size="16" required="true" requiredMessage="Email is required" maxlength="32">
                     <f:validateLength minimum="4" />
                 </p:inputText>
+                <p:message for="email" />
                 &nbsp;
                 <br />
                 <br />
@@ -36,6 +37,7 @@
                 <p:password id="password" value="#{restaurantRegisterManagedBean.newRestaurant.password}" size="16" required="true" requiredMessage="Password is required" maxlength="32">
                     <f:validateLength minimum="4" />
                 </p:password>
+                <p:message for="password" />
                 &nbsp;
                 <br />
                 <br />
@@ -98,12 +100,23 @@
                     <br />
                 </p:panel>
 
-
+                <br />
                 <p:outputLabel for="description" value="Description: " />&nbsp;
                 <br />
                 <p:inputTextarea id="description" value="#{restaurantRegisterManagedBean.newRestaurant.description}" rows="5" cols="40">
                 </p:inputTextarea>
                 <p:message for="description" />
+                &nbsp;
+                <br />
+                <br />
+                
+                <!--<p:outputLabel for="photos" value="Photos: " />&nbsp;-->
+                <p:outputLabel value="Photos: " />&nbsp;
+                <br />
+                <p:messages  redisplay="false">
+                    <p:autoUpdate />
+                </p:messages>    
+                <p:fileUpload listener="#{restaurantRegisterManagedBean.handleFileUpload}" multiple="true" />
                 &nbsp;
                 <br />
                 <br />
