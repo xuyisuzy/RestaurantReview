@@ -53,9 +53,8 @@ public class PromotionManagedBean {
     @PostConstruct
     public void postConstruct()
     {
-        promotions.add(new Promotion("test", "test", "test", new Date(), new Date()));
-//        currentRestaurant = (Restaurant) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
-//        promotions = promotionSessionBeanLocal.retrievePromotionByRestaurantId(currentRestaurant.getUseId());
+        currentRestaurant = (Restaurant) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
+        promotions = promotionSessionBeanLocal.retrievePromotionByRestaurantId(currentRestaurant.getUseId());
 //        setPromotions(promotionSessionBeanLocal.retrieveAllPromotions());
     }
     
@@ -71,7 +70,7 @@ public class PromotionManagedBean {
                 getFilteredPromotions().add(p);
             }
             
-            setNewPromotion(new Promotion());     
+            setNewPromotion(new Promotion());
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New promotion created successfully (Promotion ID: " + p.getPromotionId() + ")", null));
         }
