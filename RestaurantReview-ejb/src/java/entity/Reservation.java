@@ -19,7 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import util.enumeration.TableSize;
 
@@ -34,12 +34,11 @@ public class Reservation implements Serializable {
     
     @NotNull
     @Column(nullable = false)
-    @FutureOrPresent
+    @Future
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date reservationTime;
     
     @NotNull
-    @FutureOrPresent
     @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date timetstamp;

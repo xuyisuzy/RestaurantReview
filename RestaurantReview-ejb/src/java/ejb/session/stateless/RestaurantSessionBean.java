@@ -128,6 +128,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         
         if(restaurant != null)
         {
+            restaurant.getReservations().size();
             return restaurant;
         }
         else
@@ -180,7 +181,8 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
             
             if(restaurant.getPassword().equals(password))
             {
-//                customerEntity.getSaleTransactionEntities().size();                
+//                customerEntity.getSaleTransactionEntities().size();  
+                restaurant.getReservations().size();
                 return restaurant;
             }
             else
