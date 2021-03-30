@@ -10,7 +10,11 @@
         
         <h1>View My Promotions</h1>
         
-        <h:form id="formAllPromotions">
+        <h:form>
+            <p:commandButton value="Create New Promotion" onclick="PF('dialogCreateNewPromotion').show()" icon="pi pi-plus" />
+        </h:form>
+        
+        <h:form id="formAllPromotions" rendered="#{sessionScope.isLogin == true}">
             
             <p:messages id="messages" redisplay="false" closable="true" />
 
@@ -37,8 +41,16 @@
                     <h:outputText value="#{promotion.content}" />
                 </p:column>
                 
-                <p:column headerText="Period" sortBy="#{promotion.startDate}" filterBy="#{promotion.startDate}" filterMatchMode="contains">
-                    <h:outputText value="#{promotion.startDate}" />
+                <p:column headerText="Start Date" sortBy="#{promotion.startDate}" filterBy="#{promotion.startDate}" filterMatchMode="contains">
+                    <h:outputText value="#{promotion.startDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy"/> 
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="End Date" sortBy="#{promotion.endDate}" filterBy="#{promotion.endDate}" filterMatchMode="contains">
+                    <h:outputText value="#{promotion.endDate}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy"/> 
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="Action" >
@@ -94,13 +106,25 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="period" value="Period " style="font-weight: bold;" />
+                            <p:outputLabel for="startDate" value="Start Date " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:datePicker id="period" selectionMode="range" value="#{promotionManagedBean.newPromotion.startDate}" readonlyInput="true"/>
+                            <p:datePicker id="startDate" value="#{promotionManagedBean.newPromotion.startDate}" required="true"/>
                         </p:column>
                         <p:column>
-                            <p:message for="period" />
+                            <p:message for="startDate" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="endDate" value="End Date " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:datePicker id="endDate" value="#{promotionManagedBean.newPromotion.endDate}" required="true"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="endDate" />
                         </p:column>
                     </p:row>
 
@@ -142,7 +166,7 @@
                             <p:outputLabel for="title" value="Title: " />
                         </p:column>
                         <p:column>
-                            <p:inputText id="title" value="#{promotionManagedBean.promotionToUpdate.title}" placeholder="Promotion 1" required="true" requiredMessage="Title is required" />
+                            <p:inputText id="title" value="#{promotionManagedBean.promotionToUpdate.title}" placeholder="#{promotionManagedBean.promotionToUpdate.title}" required="true" requiredMessage="Title is required" />
                         </p:column>
                         <p:column>
                             <p:message for="title" />
@@ -154,7 +178,7 @@
                             <p:outputLabel for="content" value="Content " />
                         </p:column>
                         <p:column>
-                            <p:inputText id="content" value="#{promotionManagedBean.promotionToUpdate.content}" placeholder="Promotion 1" required="true" requiredMessage="Content is required" />
+                            <p:inputText id="content" value="#{promotionManagedBean.promotionToUpdate.content}" placeholder="#{promotionManagedBean.promotionToUpdate.content}" required="true" requiredMessage="Content is required" />
                         </p:column>
                         <p:column>
                             <p:message for="content" />
@@ -163,13 +187,25 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="period" value="Period " style="font-weight: bold;" />
+                            <p:outputLabel for="startDate" value="Start Date " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:datePicker id="period" selectionMode="range" value="#{promotionManagedBean.promotionToUpdate.period}" readonlyInput="true"/>
+                            <p:datePicker id="startDate" value="#{promotionManagedBean.promotionToUpdate.startDate}" placeholder="#{promotionManagedBean.promotionToUpdate.startDate}" required="true"/>
                         </p:column>
                         <p:column>
-                            <p:message for="period" />
+                            <p:message for="startDate" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="endDate" value="End Date " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:datePicker id="endDate" value="#{promotionManagedBean.promotionToUpdate.endDate}" placeholder="#{promotionManagedBean.promotionToUpdate.endDate}" required="true"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="endDate" />
                         </p:column>
                     </p:row>
 

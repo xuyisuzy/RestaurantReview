@@ -7,7 +7,7 @@
                 xmlns:p="http://primefaces.org/ui">>
 
     <ui:define name="content">
-        <h:panelGroup>
+        <h:panelGroup rendered="#{sessionScope.isLogin == false}">
             <article>
                 <h3>Register New Restaurant</h3>
             </article>
