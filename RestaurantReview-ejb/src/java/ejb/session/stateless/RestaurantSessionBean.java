@@ -11,8 +11,6 @@ import entity.Restaurant;
 import entity.TableConfiguration;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -71,8 +69,10 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
             try
             {
                 em.persist(newRestaurant);
-                tableConfigurationSessionBeanLocal.createNewTableConfiguration(newTableConfiguration);
-                newRestaurant.setTableConfiguration(newTableConfiguration);
+                if (newRestaurant.getAcceptReservation() == Boolean.TRUE) {
+                    tableConfigurationSessionBeanLocal.createNewTableConfiguration(newTableConfiguration);
+                    newRestaurant.setTableConfiguration(newTableConfiguration);
+                }
                 
                 em.flush();
 

@@ -74,8 +74,13 @@ public class DefaultFilter implements Filter {
         {
             if(isLogin == true)
             {
-                Restaurant currentRestaurant = (Restaurant)httpSession.getAttribute("currentRestaurant");
+//                Restaurant currentRestaurant = (Restaurant)httpSession.getAttribute("currentRestaurant");
+                chain.doFilter(request, response);
                 
+            }
+            else
+            {
+                httpServletResponse.sendRedirect(CONTEXT_ROOT + "/accessRightError.xhtml");
             }
         }
         else
@@ -89,7 +94,8 @@ public class DefaultFilter implements Filter {
     private Boolean excludeLoginCheck(String path)
     {
         if(path.equals("/index.xhtml") || 
-                path.equals("/accessRightError.xhtml") ||
+                path.equals("/accessRightError.xhtml") || 
+                path.equals("/register.xhtml") ||
                 path.startsWith("/javax.faces.resource"))
         {
             return true;
