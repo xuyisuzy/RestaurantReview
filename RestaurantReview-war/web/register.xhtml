@@ -73,11 +73,12 @@
                 <p:selectOneRadio id="acceptReservation" value="#{restaurantRegisterManagedBean.newRestaurant.acceptReservation}">
                     <f:selectItem itemLabel="Allow Reservations" itemValue="#{true}"/>
                     <f:selectItem itemLabel="Do Not Allow Reservations" itemValue="#{false}"/>
+                    <p:ajax event="click" update="formRegisterNewRestaurant:tableConfig"  />
                 </p:selectOneRadio>
                 <br />
                 <br />
 
-                <p:panel id="tableConfig" closable="true" rendered="#{restaurantRegisterManagedBean.newRestaurant.acceptReservation == true}">
+                <p:panel visible="#{restaurantRegisterManagedBean.newRestaurant.acceptReservation == true}" id="tableConfig" closable="true">
                     <p:outputLabel value="Table Configuration" />&nbsp;
                     <br />
                     <p:outputLabel for="numOfSmallTable" value="Number of small tables (1-4 pax): " />&nbsp;
@@ -111,7 +112,7 @@
                 <br />
                 
                 <!--<p:outputLabel for="photos" value="Photos: " />&nbsp;-->
-                <p:outputLabel value="Photos: " />&nbsp;
+                <p:outputLabel value="Photos: (max 5 photos)" />&nbsp;
                 <br />
                 <p:messages  redisplay="false">
                     <p:autoUpdate />

@@ -96,7 +96,8 @@ public class DefaultFilter implements Filter {
         if(path.equals("/index.xhtml") || 
                 path.equals("/accessRightError.xhtml") || 
                 path.equals("/register.xhtml") ||
-                path.startsWith("/javax.faces.resource"))
+                path.startsWith("/javax.faces.resource") ||
+                path.startsWith("/uploadedFiles"))
         {
             return true;
         }
