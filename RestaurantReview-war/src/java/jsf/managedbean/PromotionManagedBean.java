@@ -8,8 +8,8 @@ package jsf.managedbean;
 import ejb.session.stateless.PromotionSessionBeanLocal;
 import entity.Promotion;
 import entity.Restaurant;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -18,8 +18,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import util.exception.CreateNewPromotionException;
-import util.exception.DeletePromotionException;
 import util.exception.InputDataValidationException;
 import util.exception.PromotionExistException;
 import util.exception.PromotionNotFoundException;
@@ -30,8 +30,8 @@ import util.exception.UnknownPersistenceException;
  * @author fengyuan
  */
 @Named(value = "promotionManagedBean")
-@RequestScoped
-public class PromotionManagedBean {
+@ViewScoped
+public class PromotionManagedBean implements Serializable{
 
     @EJB
     private PromotionSessionBeanLocal promotionSessionBeanLocal;
@@ -42,12 +42,11 @@ public class PromotionManagedBean {
     
     private Promotion newPromotion;
     
-    private Promotion promotionToUpdate;
+    private Promotion selectedPromotionToUpdate;
     
     public PromotionManagedBean() 
     {
         newPromotion = new Promotion();
-        promotions = new ArrayList<>();
     }
     
     @PostConstruct
@@ -80,12 +79,17 @@ public class PromotionManagedBean {
         }
     }   
     
+    public void doUpdatePromotion(ActionEvent event)
+    {
+        selectedPromotionToUpdate = (Promotion)event.getComponent().getAttributes().get("promotionToUpdate");        
+    }
     
     public void updatePromotion(ActionEvent event)
     {        
         try
         {
-            promotionSessionBeanLocal.updatePromotion(getPromotionToUpdate());
+            System.out.println(selectedPromotionToUpdate.getTitle());
+            promotionSessionBeanLocal.updatePromotion(selectedPromotionToUpdate);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Promotion updated successfully", null));
         }
@@ -159,11 +163,11 @@ public class PromotionManagedBean {
         this.newPromotion = newPromotion;
     }
 
-    public Promotion getPromotionToUpdate() {
-        return promotionToUpdate;
+    public Promotion getSelectedPromotionToUpdate() {
+        return selectedPromotionToUpdate;
     }
 
-    public void setPromotionToUpdate(Promotion promotionToUpdate) {
-        this.promotionToUpdate = promotionToUpdate;
+    public void setSelectedPromotionToUpdate(Promotion selectedPromotionToUpdate) {
+        this.selectedPromotionToUpdate = selectedPromotionToUpdate;
     }
 }
