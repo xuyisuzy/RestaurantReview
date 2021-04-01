@@ -212,11 +212,19 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
         {
             Restaurant restaurant = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId);
             CustomerVoucher customerVoucherToRedeem = retrieveCustomerVoucherBySixDigitCode(sixDigitCode);
-            if (customerVoucherToRedeem.getRedeemed() == true) {
+            if (customerVoucherToRedeem.getRedeemed()) 
+            {
                 throw new CustomerVoucherRedeemedException();
             }
-            restaurant.setCreditAmount(restaurant.getCreditAmount() + customerVoucherToRedeem.getVoucher().getAmountRedeemable().doubleValue());
-            customerVoucherToRedeem.setRedeemed(true);
+            else
+            {
+                System.out.println("Start redeem");
+                customerVoucherToRedeem.setRedeemed(true);
+            }
+            Double transferCredit = customerVoucherToRedeem.getVoucher().getAmountRedeemable().doubleValue();
+            System.out.println("Start credit");
+            restaurant.setCreditAmount(restaurant.getCreditAmount() + transferCredit);
+            
         }
         catch(CustomerVoucherNotFoundException ex)
         {

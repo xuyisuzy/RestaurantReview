@@ -30,7 +30,7 @@ import util.exception.UnknownPersistenceException;
  */
 @Named(value = "promotionManagedBean")
 @ViewScoped
-public class PromotionManagedBean implements Serializable {
+public class PromotionManagedBean implements Serializable{
 
     @EJB
     private PromotionSessionBeanLocal promotionSessionBeanLocal;
@@ -81,14 +81,14 @@ public class PromotionManagedBean implements Serializable {
     
     public void doUpdatePromotion(ActionEvent event)
     {
-        promotionToUpdate = (Promotion)event.getComponent().getAttributes().get("promotionToUpdate");
+        setPromotionToUpdate((Promotion)event.getComponent().getAttributes().get("promotionToUpdate"));
     }
     
     public void updatePromotion(ActionEvent event)
     {        
         try
         {
-            promotionSessionBeanLocal.updatePromotion(promotionToUpdate);
+            promotionSessionBeanLocal.updatePromotion(getPromotionToUpdate());
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Promotion updated successfully", null));
         }
@@ -162,19 +162,19 @@ public class PromotionManagedBean implements Serializable {
         this.newPromotion = newPromotion;
     }
 
-    public Promotion getPromotionToUpdate() {
-        return promotionToUpdate;
-    }
-
-    public void setPromotionToUpdate(Promotion promotionToUpdate) {
-        this.promotionToUpdate = promotionToUpdate;
-    }
-
     public Promotion getPromotionToView() {
         return promotionToView;
     }
 
     public void setPromotionToView(Promotion promotionToView) {
         this.promotionToView = promotionToView;
+    }
+
+    public Promotion getPromotionToUpdate() {
+        return promotionToUpdate;
+    }
+
+    public void setPromotionToUpdate(Promotion promotionToUpdate) {
+        this.promotionToUpdate = promotionToUpdate;
     }
 }

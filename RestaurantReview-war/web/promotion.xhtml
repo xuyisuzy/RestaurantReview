@@ -163,7 +163,7 @@
                             <h:outputLabel value="Promotion ID: " />
                         </p:column>
                         <p:column>
-                            <h:outputText value="#{promotionManagedBean.promotionToUpdate.promotionId}" />
+                            <h:outputText value="#{promotionManagedBean.selectedPromotionToUpdate.promotionId}" />
                         </p:column>
                         <p:column>
                             &nbsp;
@@ -175,7 +175,7 @@
                             <p:outputLabel for="title" value="Title: " />
                         </p:column>
                         <p:column>
-                            <p:inputText id="title" value="#{promotionManagedBean.promotionToUpdate.title}" required="true" requiredMessage="Title is required" />
+                            <p:inputText id="title" value="#{promotionManagedBean.selectedPromotionToUpdate.title}" required="true" requiredMessage="Title is required" />
                         </p:column>
                         <p:column>
                             <p:message for="title" />
@@ -187,7 +187,7 @@
                             <p:outputLabel for="content" value="Content " />
                         </p:column>
                         <p:column>
-                            <p:inputText id="content" value="#{promotionManagedBean.promotionToUpdate.content}" required="true" requiredMessage="Content is required" />
+                            <p:inputText id="content" value="#{promotionManagedBean.selectedPromotionToUpdate.content}" required="true" requiredMessage="Content is required" />
                         </p:column>
                         <p:column>
                             <p:message for="content" />
@@ -199,7 +199,7 @@
                             <p:outputLabel for="startDate" value="Start Date " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:datePicker id="startDate" value="#{promotionManagedBean.promotionToUpdate.startDate}" required="true"/>
+                            <p:datePicker id="startDate" value="#{promotionManagedBean.selectedPromotionToUpdate.startDate}" required="true"/>
                         </p:column>
                         <p:column>
                             <p:message for="startDate" />
@@ -211,7 +211,7 @@
                             <p:outputLabel for="endDate" value="End Date " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:datePicker id="endDate" value="#{promotionManagedBean.promotionToUpdate.endDate}" required="true"/>
+                            <p:datePicker id="endDate" value="#{promotionManagedBean.selectedPromotionToUpdate.endDate}" required="true"/>
                         </p:column>
                         <p:column>
                             <p:message for="endDate" />

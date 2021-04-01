@@ -31,8 +31,8 @@ public class CustomerVoucher implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerVoucherId;
     
-    @NotNull
     @Column(nullable = false)
+    @NotNull
     private Boolean redeemed;
     
     @FutureOrPresent
@@ -43,11 +43,11 @@ public class CustomerVoucher implements Serializable {
     // Need to auto generate 
     private String sixDigitCode;
     
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Customer owner;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Voucher voucher;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Transaction transaction;
 
     public CustomerVoucher() {

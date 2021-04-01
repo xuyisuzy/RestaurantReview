@@ -40,7 +40,7 @@ public class Restaurant extends User implements Serializable {
     @Size(max = 8, min = 8)
     private String contactNumber;
     
-    private String[] photos;
+    private List<String> photos;
     
     @NotNull
     @Column(nullable = false)
@@ -88,19 +88,24 @@ public class Restaurant extends User implements Serializable {
         reviews = new ArrayList<>();
         transactions = new ArrayList<>();
         acceptReservation = Boolean.TRUE;
-        this.photos = new String[5];
+        this.photos = new ArrayList<>();
         this.creditAmount = 0.0;
     }
 
-    public Restaurant(String email, String password, String name, String address, String contactNumber, Boolean acceptReservation, String description) {
+    public Restaurant(String email, String password, String name, String address, 
+            String postalCode, String contactNumber, Boolean acceptReservation, 
+            String description, Integer openTime, Integer closeTime) {
         super(email, password);
         this.name = name;
         this.address = address;
+        this.postalCode = postalCode;
         this.contactNumber = contactNumber;
-        this.photos = new String[5];
+        this.photos = new ArrayList<>();
         this.acceptReservation = acceptReservation;
         this.creditAmount = 0.0;
         this.description = description;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
     }
 
     
@@ -136,11 +141,11 @@ public class Restaurant extends User implements Serializable {
         this.contactNumber = contactNumber;
     }
 
-    public String[] getPhotos() {
+    public List<String> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(String[] photos) {
+    public void setPhotos(List<String> photos) {
         this.photos = photos;
     }
 

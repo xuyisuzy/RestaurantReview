@@ -6,11 +6,17 @@
 package ejb.session.singleton;
 
 import ejb.session.stateless.CustomerSessionBeanLocal;
+import ejb.session.stateless.ReservationSessionBeanLocal;
 import ejb.session.stateless.RestaurantSessionBeanLocal;
+import ejb.session.stateless.TableConfigurationSessionBeanLocal;
 import ejb.session.stateless.VoucherSessionBeanLocal;
 import entity.Customer;
+import entity.Reservation;
 import entity.CustomerVoucher;
 import entity.Restaurant;
+import entity.TableConfiguration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import entity.Voucher;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -21,11 +27,14 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import util.enumeration.TableSize;
+import util.exception.CreateNewReservationException;
 import util.exception.CreateNewCustomerVoucherException;
 import util.exception.CustomerNotFoundException;
 import util.exception.CustomerUsernameExistException;
 import util.exception.CustomerVoucherExistException;
 import util.exception.InputDataValidationException;
+import util.exception.ReservationExistException;
 import util.exception.RestaurantUsernameExistException;
 import util.exception.TableConfigurationExistException;
 import util.exception.UnknownPersistenceException;
@@ -38,6 +47,9 @@ import util.exception.VoucherNotFoundException;
 @Startup
 public class DataInitSessionBean {
 
+    @EJB
+    private ReservationSessionBeanLocal reservationSessionBeanLocal;
+    
     @PersistenceContext(unitName = "RestaurantReview-ejbPU")
     private EntityManager em;
     
@@ -50,7 +62,10 @@ public class DataInitSessionBean {
 
     @EJB
     private CustomerSessionBeanLocal customerSessionBeanLocal;
-
+    
+    
+    @EJB
+    private TableConfigurationSessionBeanLocal tableConfigurationSessionBeanLocal;
     
     
     
@@ -61,10 +76,14 @@ public class DataInitSessionBean {
         {
             initializeCustomerData();
         }
-//        if(em.find(Restaurant.class, 3l) == null)
-//        {
-//            initializeRestaurantData();
-//        }
+        if(em.find(Restaurant.class, 3l) == null)
+        {
+            initializeRestaurantData();
+        }
+        if(em.find(Reservation.class, 1l) == null)
+        {
+            initializeReservationData();
+        }
         if(em.find(Voucher.class, 1l) == null)
         {
             initializeVoucherData();
@@ -74,14 +93,15 @@ public class DataInitSessionBean {
             initializeCustomerVoucherData();
         }
             
+    
     }
     
     private void initializeCustomerData()
     {
         try
         {
-            customerSessionBeanLocal.createNewCustomer(new Customer("custone@test.com", "password", "Custoemr", "One", "12345678"));
-            customerSessionBeanLocal.createNewCustomer(new Customer("custotwo@test.com", "password", "Custoemr", "Two", "87654321"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("custone@test.com", "password", "Customer", "One", "12345678"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("custotwo@test.com", "password", "Customer", "Two", "87654321"));
         }
         catch(UnknownPersistenceException | InputDataValidationException | CustomerUsernameExistException ex)
         {
@@ -93,10 +113,28 @@ public class DataInitSessionBean {
     {
         try
         {
-            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("restone@test.com", "password", "Restaurant One", "kent Ridge 1", "66666666", false, "This is test Restaurant One"), null);
-            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("resttwo@test.com", "password", "Restaurant Two", "kent Ridge 2", "77777777", false, "This is test Restaurant Two"), null);
+            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("restone@test.com", "password", "Restaurant One", "kent Ridge 1","111111", "66666666", true, "This is test Restaurant One", 8, 23), new TableConfiguration(2,3,4));
+            restaurantSessionBeanLocal.createNewRestaurant(new Restaurant("resttwo@test.com", "password", "Restaurant Two", "kent Ridge 2","111111", "77777777", false, "This is test Restaurant Two", 9, 22), null);
         }
         catch (UnknownPersistenceException | InputDataValidationException | RestaurantUsernameExistException | TableConfigurationExistException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void initializeReservationData()
+    {
+        Date currDate = new Date();
+        LocalDateTime newLocal = currDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        newLocal = newLocal.plusDays(2);
+        Date newDate = Date.from(newLocal.atZone(ZoneId.systemDefault()).toInstant());
+        
+        try
+        {
+            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, currDate, 2, TableSize.SMALL, "noooo"), 1l, 3l, null);
+            reservationSessionBeanLocal.createNewReservation(new Reservation(newDate, currDate, 8, TableSize.MEDIUM, "noooo"), 2l, 3l, null);
+        }
+        catch(UnknownPersistenceException | InputDataValidationException | CreateNewReservationException | ReservationExistException ex)
         {
             ex.printStackTrace();
         }
