@@ -9,6 +9,7 @@ import entity.Dish;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.CreateNewDishException;
+import util.exception.DeleteDishException;
 import util.exception.DishExistException;
 import util.exception.DishNotFoundException;
 import util.exception.InputDataValidationException;
@@ -27,6 +28,10 @@ public interface DishSessionBeanLocal {
 
     public Dish retrieveDishById(Long dishId) throws DishNotFoundException;
 
-    public void deleteDish(Long dishId) throws DishNotFoundException;
+    public void deleteDish(Long dishId) throws DishNotFoundException, DeleteDishException;
+    
+    public List<Dish> retrieveAllDishesForParticularRestaurant(Long restaurantId);
+    
+    public void updateDish(Dish dish) throws DishNotFoundException, InputDataValidationException;
     
 }
