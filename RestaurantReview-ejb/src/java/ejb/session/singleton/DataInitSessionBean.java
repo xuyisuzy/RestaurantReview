@@ -9,12 +9,16 @@ import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.ReservationSessionBeanLocal;
 import ejb.session.stateless.RestaurantSessionBeanLocal;
 import ejb.session.stateless.TableConfigurationSessionBeanLocal;
+import ejb.session.stateless.VoucherSessionBeanLocal;
 import entity.Customer;
 import entity.Reservation;
+import entity.CustomerVoucher;
 import entity.Restaurant;
 import entity.TableConfiguration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import entity.Voucher;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -25,12 +29,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import util.enumeration.TableSize;
 import util.exception.CreateNewReservationException;
+import util.exception.CreateNewCustomerVoucherException;
+import util.exception.CustomerNotFoundException;
 import util.exception.CustomerUsernameExistException;
+import util.exception.CustomerVoucherExistException;
 import util.exception.InputDataValidationException;
 import util.exception.ReservationExistException;
 import util.exception.RestaurantUsernameExistException;
 import util.exception.TableConfigurationExistException;
 import util.exception.UnknownPersistenceException;
+import util.exception.VoucherExistException;
+import util.exception.VoucherNotFoundException;
 
 
 @Singleton
@@ -48,7 +57,8 @@ public class DataInitSessionBean {
     @EJB
     private RestaurantSessionBeanLocal restaurantSessionBeanLocal;
     
-
+    @EJB
+    private VoucherSessionBeanLocal voucherSessionBeanLocal;
 
     @EJB
     private CustomerSessionBeanLocal customerSessionBeanLocal;
@@ -74,7 +84,16 @@ public class DataInitSessionBean {
         {
             initializeReservationData();
         }
+        if(em.find(Voucher.class, 1l) == null)
+        {
+            initializeVoucherData();
+        }
+        if(em.find(CustomerVoucher.class, 1l) == null)
+        {
+            initializeCustomerVoucherData();
+        }
             
+    
     }
     
     private void initializeCustomerData()
@@ -117,7 +136,38 @@ public class DataInitSessionBean {
         }
         catch(UnknownPersistenceException | InputDataValidationException | CreateNewReservationException | ReservationExistException ex)
         {
-            ex.printStackTrace();;
+            ex.printStackTrace();
+        }
+    }
+    
+    private void initializeVoucherData() 
+    {
+        try
+        {
+            voucherSessionBeanLocal.createNewVoucher(new Voucher("Voucher1", new Date(new Date().getTime() + (24 * 60 * 60 * 1000)), new BigDecimal(10.00), new BigDecimal(10.00), true, "for testing"));
+        }
+        catch (UnknownPersistenceException | InputDataValidationException | VoucherExistException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void initializeCustomerVoucherData()
+    {
+        try
+        {
+            Voucher voucher = voucherSessionBeanLocal.retrieveVoucherById(1L);
+            System.out.println(voucher);
+            Customer customer = customerSessionBeanLocal.retrieveCustomerById(1L);
+            System.out.println(customer);
+//            CustomerVoucher test = new CustomerVoucher(false, new Date());
+//            System.out.println("Six digit code: " + test.getSixDigitCode());
+            voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucher.getVoucherId(), customer.getUseId());
+            voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucher.getVoucherId(), customer.getUseId());
+        }
+        catch (UnknownPersistenceException | InputDataValidationException | CreateNewCustomerVoucherException | CustomerNotFoundException | CustomerVoucherExistException | VoucherNotFoundException ex)
+        {
+            ex.printStackTrace();
         }
         
     }

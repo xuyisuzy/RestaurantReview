@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.Customer;
 import entity.CustomerVoucher;
+import entity.Restaurant;
 import entity.Voucher;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +27,9 @@ import util.exception.CreateNewCustomerVoucherException;
 import util.exception.CustomerNotFoundException;
 import util.exception.CustomerVoucherExistException;
 import util.exception.CustomerVoucherNotFoundException;
+import util.exception.CustomerVoucherRedeemedException;
 import util.exception.InputDataValidationException;
+import util.exception.RestaurantNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.VoucherExistException;
 import util.exception.VoucherNotFoundException;
@@ -39,7 +42,11 @@ import util.exception.VoucherNotFoundException;
 public class VoucherSessionBean implements VoucherSessionBeanLocal {
 
     @EJB
+    private RestaurantSessionBeanLocal restaurantSessionBeanLocal;
+
+    @EJB
     private CustomerSessionBeanLocal customerSessionBeanLocal;
+    
     
     @PersistenceContext(unitName = "RestaurantReview-ejbPU")
     private EntityManager em;
@@ -54,7 +61,7 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
     }
     
     @Override
-    public Voucher createNewDish(Voucher newVoucher) throws UnknownPersistenceException, InputDataValidationException, VoucherExistException
+    public Voucher createNewVoucher(Voucher newVoucher) throws UnknownPersistenceException, InputDataValidationException, VoucherExistException
     {
         Set<ConstraintViolation<Voucher>>constraintViolations = validator.validate(newVoucher);
         
@@ -96,7 +103,7 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
     public CustomerVoucher createNewCustomerVoucher(CustomerVoucher newCustomerVoucher, Long voucherId, Long customerId) 
             throws UnknownPersistenceException, InputDataValidationException, CreateNewCustomerVoucherException, CustomerVoucherExistException
     {
-        Set<ConstraintViolation<CustomerVoucher>>constraintViolations = validator.validate(newCustomerVoucher);
+        Set<ConstraintViolation<CustomerVoucher>> constraintViolations = validator.validate(newCustomerVoucher);
         
         if(constraintViolations.isEmpty())
         {
@@ -175,6 +182,58 @@ public class VoucherSessionBean implements VoucherSessionBeanLocal {
         {
             throw new VoucherNotFoundException("Voucher ID " + voucherId + " does not exist!");
         }               
+    }
+    
+    @Override
+    public CustomerVoucher retrieveCustomerVoucherBySixDigitCode(String sixDigitCode) throws CustomerVoucherNotFoundException
+    {
+        Query query = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.sixDigitCode = :inSixDigitCode");
+        query.setParameter("inSixDigitCode", sixDigitCode); 
+        
+        try 
+        {
+            CustomerVoucher customerVoucherToRedeem = (CustomerVoucher) query.getSingleResult();
+            customerVoucherToRedeem.getVoucher();
+            customerVoucherToRedeem.getTransaction();
+            customerVoucherToRedeem.getOwner();
+            
+            return customerVoucherToRedeem;
+        }
+        catch(NoResultException | NonUniqueResultException ex)
+        {
+            throw new CustomerVoucherNotFoundException("Customer voucher with code " + sixDigitCode + " does not exist!");
+        }              
+    }
+    
+    @Override
+    public void redeemCustomerVoucher(String sixDigitCode, Long restaurantId) throws CustomerVoucherNotFoundException, RestaurantNotFoundException, CustomerVoucherRedeemedException
+    {
+        try 
+        {
+            Restaurant restaurant = restaurantSessionBeanLocal.retrieveRestaurantById(restaurantId);
+            CustomerVoucher customerVoucherToRedeem = retrieveCustomerVoucherBySixDigitCode(sixDigitCode);
+            if (customerVoucherToRedeem.getRedeemed()) 
+            {
+                throw new CustomerVoucherRedeemedException();
+            }
+            else
+            {
+                System.out.println("Start redeem");
+                customerVoucherToRedeem.setRedeemed(true);
+            }
+            Double transferCredit = customerVoucherToRedeem.getVoucher().getAmountRedeemable().doubleValue();
+            System.out.println("Start credit");
+            restaurant.setCreditAmount(restaurant.getCreditAmount() + transferCredit);
+            
+        }
+        catch(CustomerVoucherNotFoundException ex)
+        {
+            throw new CustomerVoucherNotFoundException("Customer voucher with code " + sixDigitCode + " does not exist!");
+        }
+        catch(RestaurantNotFoundException ex)
+        {
+            throw new RestaurantNotFoundException("Restaurant with ID " + restaurantId + " is not found!");
+        }
     }
     
     @Override

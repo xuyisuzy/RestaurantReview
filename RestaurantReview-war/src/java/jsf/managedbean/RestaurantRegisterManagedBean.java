@@ -38,20 +38,12 @@ public class RestaurantRegisterManagedBean {
 
     private Restaurant newRestaurant;
     private TableConfiguration newTableConfiguration; 
-    private Boolean reservationStatus = false;
     
-//    public void setTableConfig()
-//    {
-//        System.out.println("Set table Config!!!");
-//        if (reservationStatus == false)
-//                reservationStatus = true;
-//        else
-//            reservationStatus = false;
-//    }
     
     public RestaurantRegisterManagedBean() {
         newRestaurant = new Restaurant();
         newTableConfiguration = new TableConfiguration();
+        
     }
     
     public void createNewRestaurant(ActionEvent event) throws IOException {
@@ -82,22 +74,15 @@ public class RestaurantRegisterManagedBean {
         this.newTableConfiguration = newTableConfiguration;
     }
     
-    public Boolean getReservationStatus() {
-        return reservationStatus;
-    }
-
-    public void setReservationStatus(Boolean reservationStatus) {
-        this.reservationStatus = reservationStatus;
-    }
-    
     public void handleFileUpload(FileUploadEvent event)
     {
         try
         {
             String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
-
+            newRestaurant.getPhotos().add(newFilePath);
 //            System.err.println("********** Demo03ManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
 //            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
+            
 
             File file = new File(newFilePath);
             FileOutputStream fileOutputStream = new FileOutputStream(file);

@@ -14,11 +14,19 @@
             <h:form id="formAllReservations">
                 <p:messages id="messages" redisplay="false" closable="true" />
                 
-                <p:dataTable id="dataTableAllReservations" widgetVar="dataTableAllReservations" value="#{reservationManagedBean.reservations}" var="reservation" rowKey="#{reservation.reservationId}" rowIndexVar="row"
+                <p:dataTable id="dataTableAllReservations" widgetVar="dataTableAllReservations" value="#{reservationManagedBean.reservations}" var="reservation" 
+                             rowKey="#{reservation.reservationId}" rowIndexVar="row" emptyMessage="No reservation found with given criteria"
+                             filteredValue="#{reservationManagedBean.filtedReservations}"
                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
                 
-                    <p:column headerText="Reservation Time" sortBy="#{reservation.reservationTime}" filterBy="#{reservation.reservationTime}" filterMatchMode="contains">
-                        <h:outputText value="#{reservation.reservationTime}" />
+                    <p:column field="date" headerText="Reservation Time" sortBy="#{reservation.reservationTime}" 
+                              filterBy="#{reservation.reservationTime}" filterMatchMode="contains">
+                        <f:facet name="filter">
+                            <p:datePicker pattern="yyyy.MM.dd" selectionMode="single" onchange="PF('dataTableAllReservations').filter()" />
+                        </f:facet>
+                        <h:outputText value="#{reservation.reservationTime}">
+                            <f:convertDateTime dateStyle="full" pattern="yyyy.MM.dd"/>  
+                        </h:outputText>
                     </p:column>
                     
                     <p:column headerText="Customer Name" sortBy="#{reservation.customer.lastName}" filterBy="#{reservation.customer.lastName}" filterMatchMode="contains">
@@ -34,7 +42,9 @@
                     </p:column>
                     
                     <p:column headerText="Action">
-                        
+                        <p:commandButton oncomplete="PF('dialogViewReservation').show()"  update="formViewReservation" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{reservation}" target="#{reservationManagedBean.selectedReservation}" />
+                        </p:commandButton>
                     </p:column>
                 
                 </p:dataTable>
@@ -42,7 +52,70 @@
                 
             </h:form>
             
-            <h:form>
+            <h:form id="formViewReservation">
+                
+                <p:dialog id="dialogViewReservation" widgetVar="dialogViewReservation" header="View Reseravtion" closable="true">
+                    
+                    <p:panelGrid>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Reservation ID: " />                                
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{reservationManagedBean.selectedReservation.reservationId}" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Customer Name: " />                                
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{reservationManagedBean.selectedReservation.customer.lastName} #{reservationManagedBean.selectedReservation.customer.firstName}" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Reservation Time: " />                                
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{reservationManagedBean.selectedReservation.reservationTime}" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Number of Pax " />                                
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{reservationManagedBean.selectedReservation.numOfPax}" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Table Size " />                                
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{reservationManagedBean.selectedReservation.tableSizeAssigned}" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Remarks: " />                                
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{reservationManagedBean.selectedReservation.remark}" />
+                            </p:column>
+                        </p:row>
+                        
+                    </p:panelGrid>
+                    
+                    
+                </p:dialog>
                 
                 
             </h:form>
