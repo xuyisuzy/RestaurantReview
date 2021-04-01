@@ -10,8 +10,24 @@
 
             <p:menu style="width:200px;">	
                 
-                <p:menuitem value ="Home" outcome="/index.xhtml" icon="pi pi-home"/>
-                <p:menuitem value="View Promotions" outcome="/promotion.xhtml" icon="pi pi-tag"/>
+                <p:submenu label="System">
+                    <p:menuitem value ="Home" outcome="/index.xhtml" icon="pi pi-home"/>                   
+                </p:submenu>
+                
+                <p:submenu label="Account" rendered="#{sessionScope.isLogin == true}">
+                    <p:menuitem value="View Account Details" outcome="/restaurantInformation.xhtml" icon="pi pi-id-card"/>
+                    <p:menuitem value="View Dishse" outcome="/restaurantInformation.xhtml" icon="pi pi-tags"/>
+                    <p:menuitem value="Change Password" outcome="/restaurantInformation.xhtml" icon="pi pi-lock"/>
+                    
+                </p:submenu>
+                
+                <p:submenu label="Operation" rendered="#{sessionScope.isLogin == true}">
+                    <p:menuitem value="View Reservations" outcome="/reservation.xhtml" icon="pi pi-calendar"/>
+                    <p:menuitem value="View Promotions" outcome="/promotion.xhtml" icon="pi pi-tag" />
+                    <p:menuitem value="Redeem Voucher" outcome="/redeemVoucher.xhtml" icon="pi pi-ticket"/>
+                </p:submenu>
+                
+       
 
             </p:menu>
         </h:form>

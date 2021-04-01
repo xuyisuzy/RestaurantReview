@@ -8,18 +8,17 @@ package jsf.managedbean;
 import ejb.session.stateless.PromotionSessionBeanLocal;
 import entity.Promotion;
 import entity.Restaurant;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import util.exception.CreateNewPromotionException;
-import util.exception.DeletePromotionException;
 import util.exception.InputDataValidationException;
 import util.exception.PromotionExistException;
 import util.exception.PromotionNotFoundException;
@@ -30,8 +29,8 @@ import util.exception.UnknownPersistenceException;
  * @author fengyuan
  */
 @Named(value = "promotionManagedBean")
-@RequestScoped
-public class PromotionManagedBean {
+@ViewScoped
+public class PromotionManagedBean implements Serializable{
 
     @EJB
     private PromotionSessionBeanLocal promotionSessionBeanLocal;
@@ -43,19 +42,18 @@ public class PromotionManagedBean {
     private Promotion newPromotion;
     
     private Promotion promotionToUpdate;
+    private Promotion promotionToView;
     
     public PromotionManagedBean() 
     {
         newPromotion = new Promotion();
-        promotions = new ArrayList<>();
     }
     
     @PostConstruct
     public void postConstruct()
     {
-        promotions.add(new Promotion("test", "test", "test", new Date(), new Date()));
-//        currentRestaurant = (Restaurant) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
-//        promotions = promotionSessionBeanLocal.retrievePromotionByRestaurantId(currentRestaurant.getUseId());
+        currentRestaurant = (Restaurant) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
+        promotions = promotionSessionBeanLocal.retrievePromotionByRestaurantId(currentRestaurant.getUseId());
 //        setPromotions(promotionSessionBeanLocal.retrieveAllPromotions());
     }
     
@@ -71,7 +69,7 @@ public class PromotionManagedBean {
                 getFilteredPromotions().add(p);
             }
             
-            setNewPromotion(new Promotion());     
+            setNewPromotion(new Promotion());
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New promotion created successfully (Promotion ID: " + p.getPromotionId() + ")", null));
         }
@@ -81,6 +79,10 @@ public class PromotionManagedBean {
         }
     }   
     
+    public void doUpdatePromotion(ActionEvent event)
+    {
+        setPromotionToUpdate((Promotion)event.getComponent().getAttributes().get("promotionToUpdate"));
+    }
     
     public void updatePromotion(ActionEvent event)
     {        
@@ -158,6 +160,14 @@ public class PromotionManagedBean {
 
     public void setNewPromotion(Promotion newPromotion) {
         this.newPromotion = newPromotion;
+    }
+
+    public Promotion getPromotionToView() {
+        return promotionToView;
+    }
+
+    public void setPromotionToView(Promotion promotionToView) {
+        this.promotionToView = promotionToView;
     }
 
     public Promotion getPromotionToUpdate() {

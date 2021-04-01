@@ -7,8 +7,10 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Random;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,13 +31,13 @@ public class CustomerVoucher implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerVoucherId;
     
-    @NotNull
     @Column(nullable = false)
+    @NotNull
     private Boolean redeemed;
     
     @FutureOrPresent
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date timestamp;
+    private Date timeOfCreation;
     
     
     // Need to auto generate 
@@ -51,10 +53,10 @@ public class CustomerVoucher implements Serializable {
     public CustomerVoucher() {
     }
 
-    public CustomerVoucher(Boolean redeemed, Date timestamp, String sixDigitCode) {
+    public CustomerVoucher(Boolean redeemed, Date timeOfCreation) {
         this.redeemed = redeemed;
-        this.timestamp = timestamp;
-        this.sixDigitCode = sixDigitCode;
+        this.timeOfCreation = timeOfCreation;
+        this.sixDigitCode = generateSixDigitCode();
     }
     
     
@@ -73,14 +75,6 @@ public class CustomerVoucher implements Serializable {
 
     public void setRedeemed(Boolean redeemed) {
         this.redeemed = redeemed;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
     }
 
     public Customer getOwner() {
@@ -140,6 +134,25 @@ public class CustomerVoucher implements Serializable {
 
     public void setSixDigitCode(String sixDigitCode) {
         this.sixDigitCode = sixDigitCode;
+    }
+    
+    public static String generateSixDigitCode() 
+    {
+        // It will generate 6 digit random Number.
+        // from 0 to 999999
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+
+        // this will convert any number sequence into 6 character.
+        return String.format("%06d", number);
+    }
+
+    public Date getTimeOfCreation() {
+        return timeOfCreation;
+    }
+
+    public void setTimeOfCreation(Date timeOfCreation) {
+        this.timeOfCreation = timeOfCreation;
     }
     
 }

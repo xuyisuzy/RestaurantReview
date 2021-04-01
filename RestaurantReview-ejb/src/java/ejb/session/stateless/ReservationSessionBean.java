@@ -154,9 +154,12 @@ public class ReservationSessionBean implements ReservationSessionBeanLocal {
         Reservation reservationToRemove = retrieveReservationById(reservationId);
         
         em.remove(reservationToRemove);
-
-
     }
+    
+//    public List<Reservation> retrieveReservationByRestaurantId(Long restaurantId)
+//    {
+//        List<Reservation> reservations = em.createQuery("SELECT r FROM reservation r WHERE r.")
+//    }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Reservation>>constraintViolations)
     {
