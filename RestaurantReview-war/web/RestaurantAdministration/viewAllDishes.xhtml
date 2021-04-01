@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/defaultTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        
+        <div>
+            <h3>All Dishes</h3>
+            
+            <h:form>
+                <h:dataTable value="#{viewAllDishesManagedBean.dishes}" var="dishes" style="width: 100%;">
+
+                    <h:column>    				
+                        <f:facet name = "header">Dish ID</f:facet>
+                        <h:outputText value="#{dishes.dishId}" />
+                    </h:column>
+
+                    <h:column>    				
+                        <f:facet name = "header">Name</f:facet>
+                        <h:outputText value="#{dishes.name}" />
+                    </h:column>
+
+                    <h:column>    				
+                        <f:facet name = "header">Description</f:facet>
+                        <h:outputText value="#{dishes.description}" />
+                    </h:column>
+
+                    <h:column>    				
+                        <f:facet name = "header">Photo</f:facet>
+                        <h:outputText value="#{dishes.photo}" />
+                    </h:column>
+
+                    <h:column>    				
+                        <f:facet name = "header">Price</f:facet>
+                        <div style="text-align: right;">
+                            <h:outputText value="#{dishes.price}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                            </h:outputText>
+                        </div>
+                    </h:column>
+
+                    <h:column>    				
+                        <f:facet name = "header">Recommended</f:facet>
+                        <h:outputText value="#{dishes.recommended}" />
+                    </h:column>
+
+                    <h:column>    				
+                        <f:facet name = "header">Action</f:facet>
+                        <h:commandLink value="View" actionListener="#{viewAllDishesManagedBean.viewDishDetails}">
+                            <f:attribute name="dishId" value="#{dishes.dishId}" />
+                        </h:commandLink>
+                    </h:column>
+
+                </h:dataTable>
+            </h:form>
+        </div>
+        
+    </ui:define>
+
+</ui:composition>
