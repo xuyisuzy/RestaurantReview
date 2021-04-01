@@ -29,4 +29,8 @@ public interface DishSessionBeanLocal {
 
     public void deleteDish(Long dishId) throws DishNotFoundException;
     
+    public List<Dish> retrieveAllDishesForParticularRestaurant(Long restaurantId);
+    
+    public void updateDish(Dish dish) throws DishNotFoundException, InputDataValidationException;
+    
 }

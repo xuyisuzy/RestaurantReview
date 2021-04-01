@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/defaultTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        
+        <!ez:Breadcrumb pageName="updateDish" />
+        
+        <div>
+            <h3>Update Dish</h3>
+            <br/>
+                        
+            #{updateDishManagedBean.foo()}
+            <h:form id="formMain">
+                <h:messages errorClass="errorTextsWithBullet" fatalClass="errorTextsWithBullet" infoClass="infoTextsWithBullet" globalOnly="true" />
+                <br/>
+                <h:commandLink value="Back" actionListener="#{updateDishManagedBean.back}" />
+                <br/><br/>
+
+                <h:panelGrid columnClasses="dataTable3Label,dataTable3Value,dataTable3Message" columns="3" rendered="#{updateDishManagedBean.dishToUpdate != null}">
+
+                    <h:outputText style="font-weight: bold;" value="Dish ID"/>
+                    <h:outputText value="#{updateDishManagedBean.dishToUpdate.dishId}"/>
+                    <h:outputText value="" />
+
+                    <h:outputLabel style="font-weight: bold;" for="txtName" value="Name" />
+                    <h:inputText id="txtName" value="#{updateDishManagedBean.dishToUpdate.name}" required="true" requiredMessage="Name is required" />
+                    <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtName" />
+
+
+                    <h:outputLabel style="font-weight: bold;" for="txtDescription" value="Description" />
+                    <h:inputText id="txtDescription" value="#{updateDishManagedBean.dishToUpdate.description}" required="true" requiredMessage="Description is required" />
+                    <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtDescription" />
+
+                    <h:outputLabel style="font-weight: bold;" for="txtPrice" value="Price ($)" />
+                    <h:inputText id="txtPrice" value="#{updateDishManagedBean.dishToUpdate.price}" required="true" requiredMessage="Price is required" />
+                    <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtPrice" />
+
+                      <h:outputLabel style="font-weight: bold;" for="txtRecommended" value="Recommended" />
+                        <h:selectOneMenu id="txtRecommended" value="#{updateDishManagedBean.recommended}">                            
+                            <f:selectItem itemValue="Yes" itemLabel="Yes" />
+                            <f:selectItem itemValue="No" itemLabel="No" />
+                            <f:ajax event="change" execute="@this" render="formMain:lblRecommended" />
+                        </h:selectOneMenu>
+                    &nbsp;
+                        <h:outputText id="lblRecommended" value="#{updateDishManagedBean.recommended}" style="vertical-align: top;" />
+                    </h:panelGroup>
+                    <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtRecommended" />
+
+                </h:panelGrid>
+                <br/>
+                <div style="text-align: center;">                       
+                    <h:commandButton value="Update" type="submit" rendered="#{updateDishManagedBean.dishToUpdate != null}">
+                        <f:ajax event="click" execute="@form" render="@form" listener="#{updateDishManagedBean.updateDish}" />
+                    </h:commandButton>
+                </div>
+            </h:form>
+        </div>
+        
+    </ui:define>
+
+</ui:composition>
