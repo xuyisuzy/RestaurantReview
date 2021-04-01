@@ -125,6 +125,7 @@ public class DataInitSessionBean {
 //            CustomerVoucher test = new CustomerVoucher(false, new Date());
 //            System.out.println("Six digit code: " + test.getSixDigitCode());
             voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucher.getVoucherId(), customer.getUseId());
+            voucherSessionBeanLocal.createNewCustomerVoucher(new CustomerVoucher(false, new Date(new Date().getTime() + (60 * 60 * 1000))), voucher.getVoucherId(), customer.getUseId());
         }
         catch (UnknownPersistenceException | InputDataValidationException | CreateNewCustomerVoucherException | CustomerNotFoundException | CustomerVoucherExistException | VoucherNotFoundException ex)
         {
