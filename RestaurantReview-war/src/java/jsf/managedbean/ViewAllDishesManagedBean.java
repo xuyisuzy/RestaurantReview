@@ -4,6 +4,7 @@ import ejb.session.stateless.DishSessionBeanLocal;
 import entity.Dish;
 import entity.Restaurant;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -11,13 +12,14 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 
 
 
 @Named(value = "viewAllDishesManagedBean")
-@RequestScoped
+@ViewScoped
 
-public class ViewAllDishesManagedBean 
+public class ViewAllDishesManagedBean implements Serializable
 {
     @EJB
     private DishSessionBeanLocal DishSessionBeanLocal;

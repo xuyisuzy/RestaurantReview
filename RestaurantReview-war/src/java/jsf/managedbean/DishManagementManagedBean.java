@@ -38,7 +38,7 @@ public class DishManagementManagedBean implements Serializable
     @EJB
     private DishSessionBeanLocal dishSessionBeanLocal;
     @Inject
-    private ViewAllDishesManagedBean viewAllDishesManagedBean;
+    private ViewDishManagedBean viewDishManagedBean;
     
     private List<Dish> dishes;
     private List<Dish> filteredDishes;
@@ -47,9 +47,10 @@ public class DishManagementManagedBean implements Serializable
     private Dish dishToUpdate;
     private String recommended;
 
-    public DishManagementManagedBean()
+    public DishManagementManagedBean(ActionEvent event)
     {
         newDish = new Dish();
+        currentRestaurant = (Restaurant)event.getComponent().getAttributes().get("currentRestaurant");
     }
     
     
@@ -57,7 +58,7 @@ public class DishManagementManagedBean implements Serializable
     @PostConstruct
     public void postConstruct()
     {
-        setDishes(dishSessionBeanLocal.retrieveAllDishes());
+        setDishes(dishSessionBeanLocal.retrieveAllDishesForParticularRestaurant(currentRestaurant.getId()));
         
     }
     
@@ -159,12 +160,12 @@ public class DishManagementManagedBean implements Serializable
         }
     }
 
-    public ViewAllDishesManagedBean getViewAllDishesManagedBean() {
-        return viewAllDishesManagedBean;
+    public ViewDishManagedBean getViewDishManagedBean() {
+        return viewDishManagedBean;
     }
 
-    public void setViewAllDishesManagedBean(ViewAllDishesManagedBean viewAllDishesManagedBean) {
-        this.viewAllDishesManagedBean = viewAllDishesManagedBean;
+    public void setViewDishManagedBean(ViewDishManagedBean viewDishManagedBean) {
+        this.viewDishManagedBean = viewDishManagedBean;
     }
 
     public List<Dish> getDishes() {

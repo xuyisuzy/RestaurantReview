@@ -65,7 +65,7 @@
 
                     <p:column headerText="Action" >
                         <p:commandButton update="ccViewDish:formViewDish" oncomplete="PF('dialogViewDish').show()" icon="ui-icon-document" title="View">
-                            <f:setPropertyActionListener value="#{dish}" target="#{dishManagementManagedBean.viewAllDishesManagedBean.dishToView}" />
+                            <f:setPropertyActionListener value="#{dish}" target="#{dishManagementManagedBean.viewDishManagedBean.dishToView}" />
                         </p:commandButton>
                         <p:commandButton actionListener="#{dishManagementManagedBean.doUpdateDish}" update="formUpdateDish" oncomplete="PF('dialogUpdateDish').show()" icon="ui-icon-pencil" title="Update">
                             <f:attribute name="dishEntityToUpdate" value="#{dish}" />
@@ -122,7 +122,7 @@
                                 <p:outputLabel for="photo" value="Photo " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:spinner id="quantityOnHand" value="#{dishManagementManagedBean.newDish.photo}" placeholder="nth" required="true" requiredMessage="Photo is required" />
+                                <p:spinner id="photo" value="#{dishManagementManagedBean.newDish.photo}" placeholder="nth" required="true" requiredMessage="Photo is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="photo" />
@@ -134,7 +134,7 @@
                                 <p:outputLabel for="price" value="Price " style="font-weight: bold;" />
                             </p:column>
                             <p:column>                            
-                                <p:spinner id="unitPrice" value="#{dishManagementManagedBean.newDish.Price}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Price is required" />
+                                <p:spinner id="price" value="#{dishManagementManagedBean.newDish.Price}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Price is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="price" />
@@ -220,7 +220,7 @@
                                 <p:outputLabel for="photo" value="Photo " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="quantityOnHand" value="#{dishManagementManagedBean.dishToUpdate.quantityOnHand}" placeholder="nth" required="true" requiredMessage="Photo is required" />
+                                <p:spinner id="photo" value="#{dishManagementManagedBean.dishToUpdate.quantityOnHand}" placeholder="nth" required="true" requiredMessage="Photo is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="photo" />
@@ -232,7 +232,7 @@
                                 <p:outputLabel for="price" value="Price " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="unitPrice" value="#{dishManagementManagedBean.dishToUpdate.price}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Price is required" />
+                                <p:spinner id="price" value="#{dishManagementManagedBean.dishToUpdate.price}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Price is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="price" />
