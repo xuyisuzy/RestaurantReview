@@ -10,7 +10,7 @@
         
         <h1>Redeem Voucher</h1>
         
-        <h:form id="redeemVoucherForm">
+        <h:form id="redeemVoucherForm" rendered="#{sessionScope.isLogin == true}">
             <p:messages id="messagesRedeemVoucher" redisplay="false" />
             
             <h:panelGrid>

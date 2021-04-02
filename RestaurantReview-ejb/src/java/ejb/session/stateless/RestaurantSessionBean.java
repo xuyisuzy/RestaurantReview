@@ -184,6 +184,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
             {
 //                customerEntity.getSaleTransactionEntities().size();  
                 restaurant.getReservations().size();
+                restaurant.getPhotos().size();
                 return restaurant;
             }
             else
