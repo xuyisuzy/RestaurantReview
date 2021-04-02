@@ -47,10 +47,10 @@ public class DishManagementManagedBean implements Serializable
     private Dish dishToUpdate;
     private String recommended;
 
-    public DishManagementManagedBean(ActionEvent event)
+    public DishManagementManagedBean()
     {
         newDish = new Dish();
-        currentRestaurant = (Restaurant)event.getComponent().getAttributes().get("currentRestaurant");
+        
     }
     
     
@@ -58,8 +58,9 @@ public class DishManagementManagedBean implements Serializable
     @PostConstruct
     public void postConstruct()
     {
-        setDishes(dishSessionBeanLocal.retrieveAllDishesForParticularRestaurant(currentRestaurant.getId()));
-        
+        currentRestaurant = (Restaurant)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
+        //setDishes(dishSessionBeanLocal.retrieveAllDishesForParticularRestaurant(currentRestaurant.getId()));
+        dishes = currentRestaurant.getDishs();
     }
     
     

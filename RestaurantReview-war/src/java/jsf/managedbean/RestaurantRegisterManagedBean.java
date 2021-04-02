@@ -10,6 +10,7 @@ import ejb.session.stateless.TableConfigurationSessionBeanLocal;
 import entity.Restaurant;
 import entity.TableConfiguration;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,6 +50,19 @@ public class RestaurantRegisterManagedBean {
     public void createNewRestaurant(ActionEvent event) throws IOException {
         try {
 //            newRestaurant.setAcceptReservation(getReservationStatus());
+
+            File file = new File("/Users/zhiliangwang/NetBeansProjects/RestaurantReview/RestaurantReview-war/web/resources/images/300x300.png");
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            
+            byte[] picInBytes = new byte[(int) file.length()];
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(picInBytes);
+            fileInputStream.close();
+            System.out.println(picInBytes);
+            getNewRestaurant().setProfiePic(picInBytes);
+
+
+
             Long newRestaurantId = restaurantSessionBeanLocal.createNewRestaurant(getNewRestaurant(), getNewTableConfiguration());
             getNewRestaurant().setUseId(newRestaurantId);
             
@@ -78,14 +92,21 @@ public class RestaurantRegisterManagedBean {
     {
         try
         {
-            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
-            newRestaurant.getPhotos().add(newFilePath);
+//            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
+//            newRestaurant.getPhotos().add(newFilePath);
 //            System.err.println("********** Demo03ManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
 //            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
             
 
-            File file = new File(newFilePath);
+            File file = new File("/Users/zhiliangwang/NetBeansProjects/RestaurantReview/RestaurantReview-war/web/resources/images/300x300.png");
             FileOutputStream fileOutputStream = new FileOutputStream(file);
+            System.out.println("FILE triggered!!!!!");
+            
+            byte[] picInBytes = new byte[(int) file.length()];
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(picInBytes);
+            fileInputStream.close();
+            getNewRestaurant().setProfiePic(picInBytes);
 
             int a;
             int BUFFER_SIZE = 8192;

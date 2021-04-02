@@ -8,8 +8,6 @@
 
     <ui:define name="content">
         
-        <!ez:Breadcrumb pageName="dishManagement" />
-        
         <div>
             <h3>Dish Management</h3>
             
@@ -134,7 +132,7 @@
                                 <p:outputLabel for="price" value="Price " style="font-weight: bold;" />
                             </p:column>
                             <p:column>                            
-                                <p:spinner id="price" value="#{dishManagementManagedBean.newDish.Price}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Price is required" />
+                                <p:spinner id="price" value="#{dishManagementManagedBean.newDish.price}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Price is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="price" />
@@ -159,7 +157,7 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:commandButton type="reset" value="Clear" />&nbsp;
-                                <p:commandButton  value="Create New Dish" update="@form formAlldishes:dataTableAllDishes" actionListener="#{dishManagementManagedBean.createNewDish}" oncomplete="PF('dialogCreateNewdish').show();" />
+                                <p:commandButton  value="Create New Dish" update="@form formAllDishes:dataTableAllDishes" actionListener="#{dishManagementManagedBean.createNewDish}" oncomplete="PF('dialogCreateNewdish').show();" />
                             </p:column>
                         </p:row>
 
@@ -169,7 +167,6 @@
 
             </h:form>
 
-            <!ez:ViewDishes id="ccViewDishes" />
 
             <h:form id="formUpdateDish">
 
@@ -220,7 +217,7 @@
                                 <p:outputLabel for="photo" value="Photo " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="photo" value="#{dishManagementManagedBean.dishToUpdate.quantityOnHand}" placeholder="nth" required="true" requiredMessage="Photo is required" />
+                                <p:spinner id="photo" value="" placeholder="nth" required="true" requiredMessage="Photo is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="photo" />
@@ -263,15 +260,13 @@
 
                 </p:dialog>
 
-            </h:form>
-            
-            <!ez:ViewDishes id="ccViewDishes" />
+            </h:form>           
 
             <h:form id="formDeleteDish">
                 
-                <p:dialog id="dialogUpdateDish" widgetVar="dialogUpdateDish" header="Update Dish" closable="true">
+                <p:dialog id="dialogDeleteDish" widgetVar="dialogDeleteDish" header="Delete Dish" closable="true">
 
-                <p:messages id="messagesUpdateDish" redisplay="false" />
+                <p:messages id="messagesDeleteDish" redisplay="false" />
                 
                 <p:panelGrid>
 
@@ -279,7 +274,7 @@
                             <p:column>
                                 <p:outputLabel for="dishId" value="Dish Id: " style="font-weight: bold;" />
                             </p:column>
-                            <h:outputText value="#{dishManagementManagedBean.dishToUpdate.dishId}" />
+                            <h:outputText id="dishId" value="#{dishManagementManagedBean.dishToUpdate.dishId}" />
                             <p:column>
                                 <p:message for="dishId" />
                             </p:column>
@@ -289,7 +284,7 @@
                             <p:column>
                                 <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
                             </p:column>
-                            <h:outputText value="#{dishManagementManagedBean.dishToUpdate.name}" />
+                            <h:outputText id="name" value="#{dishManagementManagedBean.dishToUpdate.name}" />
                             <p:column>
                                 <p:message for="name" />
                             </p:column>
@@ -301,6 +296,7 @@
                         </p:row>
 
                     </p:panelGrid>
+                </p:dialog>
             </h:form>
 
         </div>

@@ -42,6 +42,8 @@ public class Restaurant extends User implements Serializable {
     
     private List<String> photos;
     
+    private byte[] profiePic;
+    
     @NotNull
     @Column(nullable = false)
     private Boolean acceptReservation;
@@ -280,6 +282,16 @@ public class Restaurant extends User implements Serializable {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public byte[] getProfiePic()
+    {
+        return profiePic;
+    }
+
+    public void setProfiePic(byte[] profiePic)
+    {
+        this.profiePic = profiePic;
     }
     
     

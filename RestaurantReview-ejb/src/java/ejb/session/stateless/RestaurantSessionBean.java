@@ -128,6 +128,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         
         if(restaurant != null)
         {
+            restaurant.getDishs().size();
             restaurant.getReservations().size();
             return restaurant;
         }
