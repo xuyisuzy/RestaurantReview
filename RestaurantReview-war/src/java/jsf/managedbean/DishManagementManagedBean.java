@@ -45,7 +45,7 @@ public class DishManagementManagedBean implements Serializable
     private Restaurant currentRestaurant;
     private Dish newDish;
     private Dish dishToUpdate;
-    private String recommended;
+    private Dish dishToView;
 
     public DishManagementManagedBean()
     {
@@ -76,18 +76,15 @@ public class DishManagementManagedBean implements Serializable
     
     public void createNewDish(ActionEvent event)
     {        
-        setCurrentRestaurant((Restaurant)event.getComponent().getAttributes().get("currentRestaurant"));
-        
-        boolean recommending = false;
-        if (getRecommended().equals("Yes"))
-        {
-            recommending = true;
-        }
         try
         {
             Dish dish = dishSessionBeanLocal.createNewDish(getNewDish(), getCurrentRestaurant().getId());
+            getDishes().add(dish);
+            if(getFilteredDishes() != null)
+            {
+                getFilteredDishes().add(dish);
+            }
             setNewDish(new Dish());
-            dish.setRecommended(recommending);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Dish created successfully (Dish ID: " + dish.getDishId() + ")", null));
         
         } catch (DishExistException ex) {
@@ -101,24 +98,17 @@ public class DishManagementManagedBean implements Serializable
     
     
     
-    public void doUpdateProduct(ActionEvent event)
+    public void doUpdateDish(ActionEvent event)
     {
         setDishToUpdate((Dish)event.getComponent().getAttributes().get("dishToUpdate"));
     }
     
-    
+     
     
     public void updateDish(ActionEvent event)
     {        
-        boolean recommending = false;
-        if (getRecommended().equals("Yes"))
-        {
-            recommending = true;
-        }
-        
         try
         {
-            getDishToUpdate().setRecommended(recommending);
             dishSessionBeanLocal.updateDish(getDishToUpdate());
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Dish updated successfully", null));
@@ -209,11 +199,11 @@ public class DishManagementManagedBean implements Serializable
         this.dishToUpdate = dishToUpdate;
     }
 
-    public String getRecommended() {
-        return recommended;
+    public Dish getDishToView() {
+        return dishToView;
     }
 
-    public void setRecommended(String recommended) {
-        this.recommended = recommended;
+    public void setDishToView(Dish dishToView) {
+        this.dishToView = dishToView;
     }
 }
