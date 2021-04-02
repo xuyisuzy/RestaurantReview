@@ -24,7 +24,7 @@
 
             </h:form>
             
-            <h:form id="formAllDishes">
+            <h:form id="formAllDishes" rendered="#{sessionScope.isLogin == true}">
             
                 <p:messages id="messages" redisplay="false" closable="true" />
 

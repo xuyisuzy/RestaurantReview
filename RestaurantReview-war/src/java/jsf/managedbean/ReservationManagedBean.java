@@ -54,6 +54,18 @@ public class ReservationManagedBean implements Serializable
             Restaurant currRestaurant = (Restaurant)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
             System.out.println("current rest: " + currRestaurant.getName());
             reservations = currRestaurant.getReservations();
+            
+            
+//            List<Reservation> tempList = currRestaurant.getReservations();
+            
+            // Get today's reservation list only
+//            for(Reservation resev: tempList)
+//            {
+//                if(resev.getReservationTime().equals())
+//            }
+            
+            
+            
 //            List<Reservation> tempList = currRestaurant.getReservations();
 //            
 //            for (Reservation rest: tempList)
@@ -68,7 +80,7 @@ public class ReservationManagedBean implements Serializable
     public void viewReservationDetails(ActionEvent event) throws IOException
     {
         setSelectedReservation((Reservation)event.getComponent().getAttributes().get("reservationToView"));
-        System.out.println(selectedReservation.getReservationTime());
+//        System.out.println(selectedReservation.getReservationTime());
 //        Long reservationIdToView = (Long)event.getComponent().getAttributes().get("reservationId");
 //        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("reservationIdToView", reservationIdToView);
         //FacesContext.getCurrentInstance().getExternalContext().redirect();
