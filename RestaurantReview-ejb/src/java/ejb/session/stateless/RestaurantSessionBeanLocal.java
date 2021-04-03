@@ -38,6 +38,6 @@ public interface RestaurantSessionBeanLocal {
 
     public Restaurant retrieveRestaurantByEmail(String email) throws RestaurantNotFoundException;
 
-    public void updateRestaurant(Restaurant restaurant) throws RestaurantNotFoundException, InputDataValidationException, DishNotFoundException, BankAccountNotFoundException, TableConfigurationNotFoundException;
+    public Long updateRestaurant(Restaurant restaurant) throws RestaurantNotFoundException, InputDataValidationException, DishNotFoundException, BankAccountNotFoundException, TableConfigurationNotFoundException;
     
 }

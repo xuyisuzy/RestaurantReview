@@ -12,6 +12,7 @@ import entity.Restaurant;
 import entity.TableConfiguration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -19,8 +20,12 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import util.exception.BankAccountExistException;
+import util.exception.BankAccountNotFoundException;
 import util.exception.CreateNewBankAccountException;
+import util.exception.DishNotFoundException;
 import util.exception.InputDataValidationException;
+import util.exception.RestaurantNotFoundException;
+import util.exception.TableConfigurationNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 
@@ -41,20 +46,34 @@ public class RestaurantManagedBean {
     public RestaurantManagedBean() {
     }
     
-    public void doUpdateProduct(ActionEvent event){
+    @PostConstruct
+    public void postConstruct(){
         currentRestaurant = (Restaurant)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentRestaurant");
-        
+        newBankAccount = new BankAccount();
     }
     
-    public void updateProduct(ActionEvent event){
-        if (currentRestaurant.getAcceptReservation()==false) {
-            currentRestaurant.setTableConfiguration(null);
+    
+    public void updateRestaurant(ActionEvent event){
+        
+        try {
+            if (currentRestaurant.getAcceptReservation()==false) {
+            currentRestaurant.getTableConfiguration().setNumOfSmallTable(0);
+            currentRestaurant.getTableConfiguration().setNumOfMediumTable(0);
+            currentRestaurant.getTableConfiguration().setNumOfLargeTable(0);
+            }
+            
+            Long restaurantId = restaurantSessionBeanLocal.updateRestaurant(currentRestaurant);
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Restaurant " + restaurantId + " updated successfully", null));  
+        } catch (RestaurantNotFoundException | InputDataValidationException | DishNotFoundException | BankAccountNotFoundException | TableConfigurationNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Update error: " + ex.getMessage(), null));
         }
         
     }
     
     public void createNewBankAccount(ActionEvent event){
         try {
+            System.out.println("Ceate Bank Account!!!!!!!!!!!");
             Long newBankAccountId = bankAccountSessionBeanLocal.createNewBankAccount(newBankAccount, currentRestaurant.getUseId());
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New bank account " + newBankAccountId + " registered successfully", null));  
