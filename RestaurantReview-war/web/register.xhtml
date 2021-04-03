@@ -3,7 +3,7 @@
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                template="/template/defaultTemplate.xhtml"
+                template="./template/defaultTemplate.xhtml"
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
@@ -71,8 +71,8 @@
 
                 <p:outputLabel for="acceptReservation" value="Do you want to accept online reservation? " />&nbsp;
                 <p:selectOneRadio id="acceptReservation" value="#{restaurantRegisterManagedBean.newRestaurant.acceptReservation}">
-                    <f:selectItem itemLabel="Allow Reservations" itemValue="#{true}"/>
-                    <f:selectItem itemLabel="Do Not Allow Reservations" itemValue="#{false}"/>
+                    <f:selectItem itemLabel="Accept Reservations" itemValue="#{true}"/>
+                    <f:selectItem itemLabel="Do Not Accept Reservations" itemValue="#{false}"/>
                     <p:ajax event="click" update="formRegisterNewRestaurant:tableConfig"  />
                 </p:selectOneRadio>
                 <br />

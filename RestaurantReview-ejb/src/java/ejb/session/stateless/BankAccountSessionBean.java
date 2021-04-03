@@ -49,7 +49,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
     
     @Override
-    public BankAccount createNewBankAccount(BankAccount newBankAccount, Long restaurantId) 
+    public Long createNewBankAccount(BankAccount newBankAccount, Long restaurantId) 
             throws UnknownPersistenceException, InputDataValidationException, CreateNewBankAccountException, BankAccountExistException
     {
         Set<ConstraintViolation<BankAccount>>constraintViolations = validator.validate(newBankAccount);
@@ -66,7 +66,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                 
                 em.flush();
 
-                return newBankAccount;
+                return newBankAccount.getBankAccountId();
             }
             catch(PersistenceException ex)
             {

@@ -197,7 +197,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     }
     
     @Override
-    public void updateRestaurant(Restaurant restaurant, Long bankAccountId, Long tableConfigurationId, List<Long> dishIds, List<Long> reservationIds) 
+    public void updateRestaurant(Restaurant restaurant) 
             throws RestaurantNotFoundException, InputDataValidationException, DishNotFoundException, BankAccountNotFoundException, TableConfigurationNotFoundException
     {
         if(restaurant != null && restaurant.getUseId()!= null)
@@ -208,41 +208,28 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
             {
                 Restaurant restaurantToUpdate = retrieveRestaurantById(restaurant.getUseId());
 
-                if(bankAccountId != null && (!restaurantToUpdate.getBankAccount().getBankAccountId().equals(bankAccountId)))
-                {
-                    BankAccount bankAccountToUpdate = bankAccountSessionBeanLocal.retrieveBankAccountById(bankAccountId);
-                    restaurantToUpdate.setBankAccount(bankAccountToUpdate);
-                    bankAccountToUpdate.setRestaurant(restaurantToUpdate);
-                }
+                //alr done in Bank Account SB
+//                if(bankAccountId != null && (!restaurantToUpdate.getBankAccount().getBankAccountId().equals(bankAccountId)))
+//                {
+//                    BankAccount bankAccountToUpdate = bankAccountSessionBeanLocal.retrieveBankAccountById(bankAccountId);
+//                    restaurantToUpdate.setBankAccount(bankAccountToUpdate);
+//                    bankAccountToUpdate.setRestaurant(restaurantToUpdate);
+//                }
                 
-                if(tableConfigurationId != null && (!restaurantToUpdate.getTableConfiguration().getTableConfigurationId().equals(tableConfigurationId)))
-                {
-                    TableConfiguration tableConfigurationToUpdate = tableConfigurationSessionBeanLocal.retrieveTableConfigurationById(tableConfigurationId);
-                    restaurantToUpdate.setTableConfiguration(tableConfigurationToUpdate);                    
-                }
+                    //change data of the current table config
+//                if(tableConfigurationId != null && (!restaurantToUpdate.getTableConfiguration().getTableConfigurationId().equals(tableConfigurationId)))
+//                {
+//                    TableConfiguration tableConfigurationToUpdate = tableConfigurationSessionBeanLocal.retrieveTableConfigurationById(tableConfigurationId);
+//                    restaurantToUpdate.setTableConfiguration(tableConfigurationToUpdate);                    
+//                }
 
-                // Added in v5.1
-                if(dishIds != null)
-                {
-                    for(Dish dish:restaurantToUpdate.getDishs())
-                    {
-                        dish.setRestaurant(new Restaurant());
-                    }
-
-                    restaurantToUpdate.getDishs().clear();
-
-                    for(Long dishId:dishIds)
-                    {
-                        Dish dish = dishSessionBeanLocal.retrieveDishById(dishId);
-                        restaurantToUpdate.getDishs().add(dish);
-                    }
-                }
                 
                 restaurantToUpdate.setName(restaurant.getName());
                 restaurantToUpdate.setAddress(restaurant.getAddress());
                 restaurantToUpdate.setContactNumber(restaurant.getContactNumber());
                 restaurantToUpdate.setPhotos(restaurant.getPhotos());
                 restaurantToUpdate.setAcceptReservation(restaurant.getAcceptReservation());
+                restaurantToUpdate.setTableConfiguration(restaurant.getTableConfiguration());
                 restaurantToUpdate.setCreditAmount(restaurant.getCreditAmount());
                 restaurantToUpdate.setDescription(restaurant.getDescription());
                 
