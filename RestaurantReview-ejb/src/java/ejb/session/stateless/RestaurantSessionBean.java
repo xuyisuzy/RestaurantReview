@@ -128,6 +128,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
         
         if(restaurant != null)
         {
+            restaurant.getDishs().size();
             restaurant.getReservations().size();
             return restaurant;
         }
@@ -183,6 +184,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
             {
 //                customerEntity.getSaleTransactionEntities().size();  
                 restaurant.getReservations().size();
+                restaurant.getPhotos().size();
                 return restaurant;
             }
             else

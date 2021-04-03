@@ -20,6 +20,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CreateNewDishException;
+import util.exception.DeleteDishException;
 import util.exception.DishExistException;
 import util.exception.DishNotFoundException;
 import util.exception.InputDataValidationException;
@@ -113,6 +114,22 @@ public class DishSessionBean implements DishSessionBeanLocal {
     }
     
     @Override
+    public List<Dish> retrieveAllDishesForParticularRestaurant(Long restaurantId)
+    {
+        Query query = em.createQuery("SELECT d FROM Dish d WHERE d.restaurantId =:inRestaurantId ORDER BY d.name ASC");
+        query.setParameter("inRestaurantId", restaurantId);        
+        List<Dish> dishes = query.getResultList();
+        
+        for(Dish dish:dishes)
+        {
+//            reservation.getCategoryEntity();
+//            reservation.getTagEntities().size();
+        }
+        
+        return dishes;
+    }
+    
+    @Override
     public Dish retrieveDishById(Long dishId) throws DishNotFoundException
     {
         Dish dish = em.find(Dish.class, dishId);
@@ -131,7 +148,35 @@ public class DishSessionBean implements DishSessionBeanLocal {
     }
     
     @Override
-    public void deleteDish(Long dishId) throws DishNotFoundException
+    public void updateDish(Dish dish) throws DishNotFoundException, InputDataValidationException
+    {
+        if(dish != null && dish.getDishId()!= null)
+        {
+            Set<ConstraintViolation<Dish>>constraintViolations = validator.validate(dish);
+        
+            if(constraintViolations.isEmpty())
+            {
+                Dish dishToUpdate = retrieveDishById(dish.getDishId());
+
+                    dishToUpdate.setName(dish.getName());
+                    dishToUpdate.setDescription(dish.getDescription());
+                    dishToUpdate.setPhoto(dish.getPhoto());
+                    dishToUpdate.setPrice(dish.getPrice());
+                    dishToUpdate.setRecommended(dish.getRecommended());
+            }
+            else
+            {
+                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            }
+        }
+        else 
+        {
+            throw new DishNotFoundException("Dish ID not provided for dish to be updated");
+        }
+    }
+    
+    @Override
+    public void deleteDish(Long dishId) throws DishNotFoundException, DeleteDishException
     {
         Dish dishToRemove = retrieveDishById(dishId);
         
@@ -150,4 +195,6 @@ public class DishSessionBean implements DishSessionBeanLocal {
         
         return msg;
     }
+    
+    
 }
