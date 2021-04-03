@@ -14,7 +14,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -42,7 +41,8 @@ public class PromotionManagedBean implements Serializable{
     
     private Promotion newPromotion;
     
-    private Promotion selectedPromotionToUpdate;
+    private Promotion promotionToUpdate;
+    private Promotion promotionToView;
     
     public PromotionManagedBean() 
     {
@@ -81,15 +81,14 @@ public class PromotionManagedBean implements Serializable{
     
     public void doUpdatePromotion(ActionEvent event)
     {
-        selectedPromotionToUpdate = (Promotion)event.getComponent().getAttributes().get("promotionToUpdate");        
+        setPromotionToUpdate((Promotion)event.getComponent().getAttributes().get("promotionToUpdate"));
     }
     
     public void updatePromotion(ActionEvent event)
     {        
         try
         {
-            System.out.println(selectedPromotionToUpdate.getTitle());
-            promotionSessionBeanLocal.updatePromotion(selectedPromotionToUpdate);
+            promotionSessionBeanLocal.updatePromotion(getPromotionToUpdate());
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Promotion updated successfully", null));
         }
@@ -163,11 +162,19 @@ public class PromotionManagedBean implements Serializable{
         this.newPromotion = newPromotion;
     }
 
-    public Promotion getSelectedPromotionToUpdate() {
-        return selectedPromotionToUpdate;
+    public Promotion getPromotionToView() {
+        return promotionToView;
     }
 
-    public void setSelectedPromotionToUpdate(Promotion selectedPromotionToUpdate) {
-        this.selectedPromotionToUpdate = selectedPromotionToUpdate;
+    public void setPromotionToView(Promotion promotionToView) {
+        this.promotionToView = promotionToView;
+    }
+
+    public Promotion getPromotionToUpdate() {
+        return promotionToUpdate;
+    }
+
+    public void setPromotionToUpdate(Promotion promotionToUpdate) {
+        this.promotionToUpdate = promotionToUpdate;
     }
 }

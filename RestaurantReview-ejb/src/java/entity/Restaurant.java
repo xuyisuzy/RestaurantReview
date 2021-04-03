@@ -284,6 +284,4 @@ public class Restaurant extends User implements Serializable {
         this.postalCode = postalCode;
     }
     
-    
-    
 }
