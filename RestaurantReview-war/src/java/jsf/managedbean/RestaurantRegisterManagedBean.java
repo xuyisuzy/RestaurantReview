@@ -83,7 +83,7 @@ public class RestaurantRegisterManagedBean implements Serializable
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Restaurant " + newRestaurantId + " registered successfully", null));  
         } catch (UnknownPersistenceException|InputDataValidationException|RestaurantUsernameExistException|TableConfigurationExistException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid login credential: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid data input: " + ex.getMessage(), null));
         }
     }
 

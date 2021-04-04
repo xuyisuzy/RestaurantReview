@@ -21,7 +21,7 @@ import util.exception.UnknownPersistenceException;
 @Local
 public interface BankAccountSessionBeanLocal {
 
-    public BankAccount createNewBankAccount(BankAccount newBankAccount, Long restaurantId) throws UnknownPersistenceException, InputDataValidationException, CreateNewBankAccountException, BankAccountExistException;
+    public Long createNewBankAccount(BankAccount newBankAccount, Long restaurantId) throws UnknownPersistenceException, InputDataValidationException, CreateNewBankAccountException, BankAccountExistException;
 
     public List<BankAccount> retrieveAllBankAccounts();
 

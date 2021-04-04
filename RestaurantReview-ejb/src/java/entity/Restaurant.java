@@ -90,6 +90,7 @@ public class Restaurant extends User implements Serializable {
         acceptReservation = Boolean.TRUE;
         this.photos = new ArrayList<>();
         this.creditAmount = 0.0;
+        this.bankAccount = null;
     }
 
     public Restaurant(String email, String password, String name, String address, 
@@ -106,6 +107,7 @@ public class Restaurant extends User implements Serializable {
         this.description = description;
         this.openTime = openTime;
         this.closeTime = closeTime;
+        this.bankAccount = null;
     }
 
     

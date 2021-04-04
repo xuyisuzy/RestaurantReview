@@ -9,41 +9,39 @@
     <ui:define name="content">
         <h:panelGroup>
             <article>
-                <h3>Register New Restaurant</h3>
+                <h3>View Account Details</h3>
             </article>
 
-            <h:form id="formRegisterNewRestaurant"> 
-                <p:messages id="messagesRegisterNewRestaurant" redisplay="false"/>
+            <h:form id="formUpdateRestaurant"> 
+                <p:messages id="messagesUpdateRestaurant" redisplay="false"/>
 
+                <p:outputLabel value="Restaurant ID: " />&nbsp;
+                <h:outputText value="#{restaurantManagedBean.currentRestaurant.id}">
+                </h:outputText>
+                &nbsp;
+                <br />
+                <br />
+                
+                <p:outputLabel value="Email: " />&nbsp;
+                <h:outputText value="#{restaurantManagedBean.currentRestaurant.email}">
+                </h:outputText>
+                &nbsp;
+                <br />
+                <br />
+                
                 <p:outputLabel for="name" value="Name: " />&nbsp;
-                <p:inputText id="name" value="#{restaurantRegisterManagedBean.newRestaurant.name}" size="16" required="true" requiredMessage="Restaurant name is required" maxlength="64">
-                    <f:validateLength minimum="1" />
+                <p:inputText id="name" value="#{restaurantManagedBean.currentRestaurant.name}" required="true" requiredMessage="Name is required">
+                <f:validateLength minimum="1" />
                 </p:inputText>
                 <p:message for="name" />
                 &nbsp;
                 <br />
                 <br />
                 
-                <p:outputLabel for="email" value="Email" />&nbsp;
-                <p:inputText id="email" value="#{restaurantRegisterManagedBean.newRestaurant.email}" size="16" required="true" requiredMessage="Email is required" maxlength="32">
-                    <f:validateLength minimum="4" />
-                </p:inputText>
-                <p:message for="email" />
-                &nbsp;
-                <br />
-                <br />
                 
-                <p:outputLabel for="password" value="Password" />&nbsp;
-                <p:password id="password" value="#{restaurantRegisterManagedBean.newRestaurant.password}" size="16" required="true" requiredMessage="Password is required" maxlength="32">
-                    <f:validateLength minimum="4" />
-                </p:password>
-                <p:message for="password" />
-                &nbsp;
-                <br />
-                <br />
-
+                
                 <p:outputLabel for="address" value="Address: " />&nbsp;
-                <p:inputText id="address" value="#{restaurantRegisterManagedBean.newRestaurant.address}" size="16" required="true" requiredMessage="Restaurant address is required">
+                <p:inputText id="address" value="#{restaurantManagedBean.currentRestaurant.address}" required="true" requiredMessage="Restaurant address is required">
                     <f:validateLength minimum="1" />
                 </p:inputText>
                 <p:message for="address" />
@@ -52,7 +50,7 @@
                 <br />
 
                 <p:outputLabel for="postalCode" value="Postal Code: " />&nbsp;
-                <p:inputText id="postalCode" value="#{restaurantRegisterManagedBean.newRestaurant.postalCode}" size="16" required="true" requiredMessage="Restaurant address is required" maxlength="6">
+                <p:inputText id="postalCode" value="#{restaurantManagedBean.currentRestaurant.postalCode}" required="true" requiredMessage="Restaurant address is required" maxlength="6">
                     <f:validateLength minimum="6" />
                 </p:inputText>
                 <p:message for="postalCode" />
@@ -61,7 +59,7 @@
                 <br />
 
                 <p:outputLabel for="contactNumber" value="Contact Number: " />&nbsp;
-                <p:inputText id="contactNumber" value="#{restaurantRegisterManagedBean.newRestaurant.contactNumber}" size="16" required="true" requiredMessage="Restaurant contact number is required" maxlength="8">
+                <p:inputText id="contactNumber" value="#{restaurantManagedBean.currentRestaurant.contactNumber}" required="true" requiredMessage="Restaurant contact number is required" maxlength="8">
                     <f:validateLength minimum="8" />
                 </p:inputText>
                 <p:message for="contactNumber" />
@@ -69,32 +67,32 @@
                 <br />
                 <br />
 
-                <p:outputLabel for="acceptReservation" value="Do you want to accept online reservation? " />&nbsp;
-                <p:selectOneRadio id="acceptReservation" value="#{restaurantRegisterManagedBean.newRestaurant.acceptReservation}">
+                <p:outputLabel for="acceptReservation" value="Accept Reservation: " />&nbsp;
+                <p:selectOneRadio id="acceptReservation" value="#{restaurantManagedBean.currentRestaurant.acceptReservation}">
                     <f:selectItem itemLabel="Accept Reservations" itemValue="#{true}"/>
                     <f:selectItem itemLabel="Do Not Accept Reservations" itemValue="#{false}"/>
-                    <p:ajax event="click" update="formRegisterNewRestaurant:tableConfig"  />
+                    <p:ajax event="click" update="formUpdateRestaurant:tableConfig"  />
                 </p:selectOneRadio>
                 <br />
                 <br />
 
-                <p:panel visible="#{restaurantRegisterManagedBean.newRestaurant.acceptReservation == true}" id="tableConfig" closable="true">
+                <p:panel visible="#{restaurantManagedBean.currentRestaurant.acceptReservation == true}" id="tableConfig" closable="true">
                     <p:outputLabel value="Table Configuration" />&nbsp;
                     <br />
                     <p:outputLabel for="numOfSmallTable" value="Number of small tables (1-4 pax): " />&nbsp;
-                    <p:spinner id="numOfSmallTable" value="#{restaurantRegisterManagedBean.newTableConfiguration.numOfSmallTable}" placeholder="5" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Number of small tables is required"/>
+                    <p:spinner id="numOfSmallTable" value="#{restaurantManagedBean.currentRestaurant.tableConfiguration.numOfSmallTable}" placeholder="5" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Number of small tables is required"/>
                     <p:message for="numOfSmallTable" />
                     &nbsp;
                     <br />
 
                     <p:outputLabel for="numOfMediumTable" value="Number of medium tables (5-8 pax): " />&nbsp;
-                    <p:spinner id="numOfMediumTable" value="#{restaurantRegisterManagedBean.newTableConfiguration.numOfMediumTable}" placeholder="5" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Number of small tables is required"/>
+                    <p:spinner id="numOfMediumTable" value="#{restaurantManagedBean.currentRestaurant.tableConfiguration.numOfMediumTable}" placeholder="5" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Number of small tables is required"/>
                     <p:message for="numOfMediumTable" />
                     &nbsp;
                     <br />
 
                     <p:outputLabel for="numOfLargeTable" value="Number of large tables (above 8 pax): " />&nbsp;
-                    <p:spinner id="numOfLargeTable" value="#{restaurantRegisterManagedBean.newTableConfiguration.numOfLargeTable}" placeholder="5" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Number of small tables is required"/>
+                    <p:spinner id="numOfLargeTable" value="#{restaurantManagedBean.currentRestaurant.tableConfiguration.numOfLargeTable}" placeholder="5" min="0" max="1000000" stepFactor="1" required="true" requiredMessage="Number of small tables is required"/>
                     <p:message for="numOfLargeTable" />
                     &nbsp;
                     <br />
@@ -104,26 +102,54 @@
                 <br />
                 <p:outputLabel for="description" value="Description: " />&nbsp;
                 <br />
-                <p:inputTextarea id="description" value="#{restaurantRegisterManagedBean.newRestaurant.description}" rows="5" cols="40">
+                <p:inputTextarea id="description" value="#{restaurantManagedBean.currentRestaurant.description}" rows="5" cols="40">
                 </p:inputTextarea>
                 <p:message for="description" />
                 &nbsp;
                 <br />
                 <br />
                 
-                <!--<p:outputLabel for="photos" value="Photos: " />&nbsp;-->
-                <p:outputLabel value="Photos: (max 5 photos)" />&nbsp;
-                <br />
-                <p:messages  redisplay="false">
-                    <p:autoUpdate />
-                </p:messages>    
-                <p:fileUpload listener="#{restaurantRegisterManagedBean.handleFileUpload}" multiple="true" />
-                &nbsp;
-                <br />
-                <br />
+                <p:panel visible="#{restaurantManagedBean.currentRestaurant.bankAccount == null}" id="registerBankAccount" widgetVar="registerBankAccount" closable="true">
+                    
+                    
+                    <p:outputLabel value="Add New Bank Account" />&nbsp;
+                    <br />
+                    <p:outputLabel for="bankAccountNumber" value="Bank Account Number: " />&nbsp;
+                    <p:inputText id="bankAccountNumber" value="#{restaurantManagedBean.newBankAccount.bankAccountNumber}" required="true" requiredMessage="Bank account number is required">
+                    <f:validateLength minimum="1" />
+                    </p:inputText>
+                    <p:message for="bankAccountNumber" />
+                    &nbsp;
+                    <br />
+
+                    <p:outputLabel for="nameOfBank" value="Name of the Bank: " />&nbsp;
+                    <p:inputText id="nameOfBank" value="#{restaurantManagedBean.newBankAccount.nameOfBank}" required="true" requiredMessage="Name of the bank is required">
+                    <f:validateLength minimum="1" />
+                    </p:inputText>
+                    <p:message for="nameOfBank" />
+                    &nbsp;
+                    <br />
+
+                    <p:outputLabel for="nameOfOwner" value="Name of the Account Owner: " />&nbsp;
+                    <p:inputText id="nameOfOwner" value="#{restaurantManagedBean.newBankAccount.nameOfOwner}" required="true" requiredMessage="Name of the owner is required">
+                    <f:validateLength minimum="1" />
+                    </p:inputText>
+                    <p:message for="nameOfOwner" />
+                    &nbsp;
+                    <br />
+                    <br />
+                    
+                    <p:messages id="messagesRegisterBankAccount" redisplay="false" closable="true" />
+                    
+                    <p:commandButton id="createBankAccount" value="Create" actionListener="#{restaurantManagedBean.createNewBankAccount}"/>
+                </p:panel>
+                
+                
+                
+                
 
                 <p:outputLabel for="openTime" value="Open time: " />&nbsp;
-                <p:selectOneMenu id="openTime" value="#{restaurantRegisterManagedBean.newRestaurant.openTime}">
+                <p:selectOneMenu id="openTime" value="#{restaurantManagedBean.currentRestaurant.openTime}">
                      <f:selectItem itemLabel="12am" itemValue="0"/> 
                      <f:selectItem itemLabel="1am" itemValue="1"/>
                      <f:selectItem itemLabel="2am" itemValue="2"/>
@@ -153,7 +179,7 @@
                 <br />
 
                 <p:outputLabel for="closeTime" value="Close time: " />&nbsp;
-                <p:selectOneMenu id="closeTime" value="#{restaurantRegisterManagedBean.newRestaurant.closeTime}">
+                <p:selectOneMenu id="closeTime" value="#{restaurantManagedBean.currentRestaurant.closeTime}">
                      <f:selectItem itemLabel="12am" itemValue="0"/> 
                      <f:selectItem itemLabel="1am" itemValue="1"/>
                      <f:selectItem itemLabel="2am" itemValue="2"/>
@@ -181,8 +207,9 @@
                 </p:selectOneMenu>
                 <br />
                 <br />
+               
 
-                <p:commandButton id="register" value="Register" actionListener="#{restaurantRegisterManagedBean.createNewRestaurant}" update="@form formRegisterNewRestaurant"/>
+                <p:commandButton id="update" value="Update" actionListener="#{restaurantManagedBean.updateRestaurant}" update="@form formUpdateRestaurant"/>
 
             </h:form> 
         </h:panelGroup>
