@@ -42,10 +42,19 @@
                     <h:outputText value="#{review.creater.firstName}" />
                 </p:column>
                 
-                <p:column headerText="Time of Creation" sortBy="#{review.timeStamp}" filterBy="#{review.timeStamp}" filterMatchMode="contains">
-                    <h:outputText value="#{review.timeStamp}" >
+                <p:column headerText="Time of Creation" sortBy="#{review.timeOfCreation}" filterBy="#{review.timeOfCreation}" filterMatchMode="contains">
+                    <h:outputText value="#{review.timeOfCreation}" >
                         <f:convertDateTime pattern="MM/dd/yyyy"/> 
                     </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Action" >
+                    <p:commandButton oncomplete="PF('dialogViewPromotion').show()" icon="ui-icon-document" title="View">
+                        <f:setPropertyActionListener value="#{promotion}" target="#{promotionManagedBean.promotionToView}" />
+                    </p:commandButton>
+                    <p:commandButton actionListener="#{promotionManagedBean.replyReview}" update="formUpdatePromotion" oncomplete="PF('dialogUpdatePromotion').show()" icon="ui-icon-pencil" title="Update">
+                        <f:attribute name="reviewToReply" value="#{review}" />
+                    </p:commandButton>
                 </p:column>
 
             </p:dataTable>

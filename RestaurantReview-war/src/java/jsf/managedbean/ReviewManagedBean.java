@@ -13,6 +13,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 
@@ -31,6 +32,8 @@ public class ReviewManagedBean implements Serializable {
     private List<Review> myReviews;
     private List<Review> filteredReviews;
     
+    private Review newReview;
+    
     public ReviewManagedBean() {
     }
     
@@ -41,6 +44,29 @@ public class ReviewManagedBean implements Serializable {
         setMyReviews(reviewSessionBeanLocal.retrieveReviewsByRestaurantId(getCurrentRestaurant().getUseId()));
 //        setPromotions(promotionSessionBeanLocal.retrieveAllPromotions());
     }
+    
+//    public void replyReview(ActionEvent event)
+//    {
+//        try
+//        {
+//            Review reviewToReply = (Review)event.getComponent().getAttributes().get("reviewToReply");
+//            Promotion p = reviewSessionBeanLocal.createNewReview(new Review, , Long.MIN_VALUE)
+//            getPromotions().add(p);
+//            
+//            if(getFilteredPromotions() != null)
+//            {
+//                getFilteredPromotions().add(p);
+//            }
+//            
+//            setNewPromotion(new Promotion());
+//
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New promotion created successfully (Promotion ID: " + p.getPromotionId() + ")", null));
+//        }
+//        catch(InputDataValidationException | CreateNewPromotionException | PromotionExistException | UnknownPersistenceException ex)
+//        {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new promotion: " + ex.getMessage(), null));
+//        }
+//    }
 
     public Restaurant getCurrentRestaurant() {
         return currentRestaurant;
