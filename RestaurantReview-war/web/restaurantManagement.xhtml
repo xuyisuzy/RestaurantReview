@@ -22,23 +22,21 @@
                 <br />
                 <br />
                 
-                <p:outputLabel value="Email: " />&nbsp;
-                <h:outputText value="#{restaurantManagedBean.currentRestaurant.email}">
-                </h:outputText>
-                &nbsp;
-                <br />
-                <br />
-                
                 <p:outputLabel for="name" value="Name: " />&nbsp;
-                <p:inputText id="name" value="#{restaurantManagedBean.currentRestaurant.name}" required="true" requiredMessage="Name is required">
+                <p:inputText id="name" value="#{restaurantManagedBean.currentRestaurant.name}" required="true" requiredMessage="Name is required" />
                 <f:validateLength minimum="1" />
-                </p:inputText>
+                </h:outputText>
                 <p:message for="name" />
                 &nbsp;
                 <br />
                 <br />
                 
-                
+                <p:outputLabel for="email" value="Email" />&nbsp;
+                <h:outputText value="#{restaurantManagedBean.currentRestaurant.email}">
+                </h:outputText>
+                &nbsp;
+                <br />
+                <br />
                 
                 <p:outputLabel for="address" value="Address: " />&nbsp;
                 <p:inputText id="address" value="#{restaurantManagedBean.currentRestaurant.address}" required="true" requiredMessage="Restaurant address is required">
@@ -109,13 +107,24 @@
                 <br />
                 <br />
                 
-                <p:panel visible="#{restaurantManagedBean.currentRestaurant.bankAccount == null}" id="registerBankAccount" widgetVar="registerBankAccount" closable="true">
-                    
+                <!--<p:outputLabel for="photos" value="Photos: " />&nbsp;-->
+<!--                <p:outputLabel value="Photos: (max 5 photos)" />&nbsp;
+                <br />
+                <p:messages  redisplay="false">
+                    <p:autoUpdate />
+                </p:messages>    
+                <p:fileUpload listener="#{restaurantRegisterManagedBean.handleFileUpload}" multiple="true" />
+                &nbsp;
+                <br />
+                <br />-->
+                
+                <p:panel visible="#{restaurantManagedBean.currentRestaurant.bankAccount == null}" id="registerBankAccount" closable="true">
+                    <p:messages id="messages" redisplay="false" closable="true" />
                     
                     <p:outputLabel value="Add New Bank Account" />&nbsp;
                     <br />
                     <p:outputLabel for="bankAccountNumber" value="Bank Account Number: " />&nbsp;
-                    <p:inputText id="bankAccountNumber" value="#{restaurantManagedBean.newBankAccount.bankAccountNumber}" required="true" requiredMessage="Bank account number is required">
+                    <p:inputText id="bankAccountNumber" value="#{restaurantManagedBean.newBankAccount.bankAccountNumber}" required="true" requiredMessage="Bank account number is required" />
                     <f:validateLength minimum="1" />
                     </p:inputText>
                     <p:message for="bankAccountNumber" />
@@ -123,7 +132,7 @@
                     <br />
 
                     <p:outputLabel for="nameOfBank" value="Name of the Bank: " />&nbsp;
-                    <p:inputText id="nameOfBank" value="#{restaurantManagedBean.newBankAccount.nameOfBank}" required="true" requiredMessage="Name of the bank is required">
+                    <p:inputText id="nameOfBank" value="#{restaurantManagedBean.newBankAccount.nameOfBank}" required="true" requiredMessage="Name of the bank is required" />
                     <f:validateLength minimum="1" />
                     </p:inputText>
                     <p:message for="nameOfBank" />
@@ -131,7 +140,7 @@
                     <br />
 
                     <p:outputLabel for="nameOfOwner" value="Name of the Account Owner: " />&nbsp;
-                    <p:inputText id="nameOfOwner" value="#{restaurantManagedBean.newBankAccount.nameOfOwner}" required="true" requiredMessage="Name of the owner is required">
+                    <p:inputText id="nameOfOwner" value="#{restaurantManagedBean.newBankAccount.nameOfOwner}" required="true" requiredMessage="Name of the owner is required" />
                     <f:validateLength minimum="1" />
                     </p:inputText>
                     <p:message for="nameOfOwner" />
@@ -139,12 +148,44 @@
                     <br />
                     <br />
                     
-                    <p:messages id="messagesRegisterBankAccount" redisplay="false" closable="true" />
-                    
-                    <p:commandButton id="createBankAccount" value="Create" actionListener="#{restaurantManagedBean.createNewBankAccount}"/>
+                    <p:commandButton id="createBankAccount" value="Create" actionListener="#{restaurantManagedBean.createNewBankAccount}" update="@form formUpdateRestaurant"/>
                 </p:panel>
                 
+                <p:panel visible="#{restaurantManagedBean.currentRestaurant.bankAccount != null}" id="updateBankAccount" closable="true">
+                    <p:outputLabel value="Edit Bank Account" />&nbsp;
+                    <br />
+                    <p:outputLabel for="bankAccountId" value="Bank Account ID " />&nbsp;
+                    <h:outputText value="#{restaurantManagedBean.currentRestaurant.bankAccount.bankAccountId}"/>
+          
+                    &nbsp;
+                    <br />
+                    
+                    <p:outputLabel for="bankAccountNumber" value="Bank Account Number: " />&nbsp;
+                    <p:inputText id="bankAccountNumber" value="#{restaurantManagedBean.currentRestaurant.bankAccount.bankAccountNumber}" required="true" requiredMessage="Bank account number is required" />
+                    <f:validateLength minimum="1" />
+                    </h:outputText>
+                    <p:message for="bankAccountNumber" />
+                    &nbsp;
+                    <br />
+
+                    <p:outputLabel for="nameOfBank" value="Name of the Bank: " />&nbsp;
+                    <p:inputText id="nameOfBank" value="#{restaurantManagedBean.currentRestaurant.bankAccount.nameOfBank}" required="true" requiredMessage="Name of the bank is required" />
+                    <f:validateLength minimum="1" />
+                    </p:inputText>
+                    <p:message for="nameOfBank" />
+                    &nbsp;
+                    <br />
+
+                    <p:outputLabel for="nameOfOwner" value="Name of the Account Owner: " />&nbsp;
+                    <p:inputText id="nameOfOwner" value="#{restaurantManagedBean.currentRestaurant.bankAccount.nameOfOwner}" required="true" requiredMessage="Name of the owner is required" />
+                    <f:validateLength minimum="1" />
+                    </p:inputText>
+                    <p:message for="nameOfOwner" />
+                    &nbsp;
+                    <br />
+                    <br />
                 
+                </p:panel>
                 
                 
 
@@ -207,9 +248,17 @@
                 </p:selectOneMenu>
                 <br />
                 <br />
-               
+                
+<!--                <p:outputLabel for="password" value="Password" />&nbsp;
+                <p:password id="password" value="#{restaurantRegisterManagedBean.newRestaurant.password}" size="16" required="true" requiredMessage="Password is required" maxlength="32">
+                    <f:validateLength minimum="4" />
+                </p:password>
+                <p:message for="password" />
+                &nbsp;
+                <br />
+                <br />-->
 
-                <p:commandButton id="update" value="Update" actionListener="#{restaurantManagedBean.updateRestaurant}" update="@form formUpdateRestaurant"/>
+                <p:commandButton id="register" value="Register" actionListener="#{restaurantRegisterManagedBean.createNewRestaurant}" update="@form formRegisterNewRestaurant"/>
 
             </h:form> 
         </h:panelGroup>

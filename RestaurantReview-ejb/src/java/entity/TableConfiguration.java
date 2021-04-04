@@ -25,15 +25,15 @@ public class TableConfiguration implements Serializable {
     
     @NotNull
     @Column(nullable = false)
-    private Integer numOfSmallTable = 0;
+    private Integer numOfSmallTable;
     
     @NotNull
     @Column(nullable = false)
-    private Integer numOfMediumTable = 0;
+    private Integer numOfMediumTable;
     
     @NotNull
     @Column(nullable = false)
-    private Integer numOfLargeTable = 0;
+    private Integer numOfLargeTable;
 
 
     public TableConfiguration() {

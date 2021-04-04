@@ -69,12 +69,10 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
             try
             {
                 em.persist(newRestaurant);
-                if (newRestaurant.getAcceptReservation() == Boolean.FALSE) {
-                    newTableConfiguration = new TableConfiguration();
+                if (newRestaurant.getAcceptReservation() == Boolean.TRUE) {
+                    tableConfigurationSessionBeanLocal.createNewTableConfiguration(newTableConfiguration);
+                    newRestaurant.setTableConfiguration(newTableConfiguration);
                 }
-                
-                tableConfigurationSessionBeanLocal.createNewTableConfiguration(newTableConfiguration);
-                newRestaurant.setTableConfiguration(newTableConfiguration);
                 
                 em.flush();
 
@@ -201,7 +199,7 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
     }
     
     @Override
-    public Long updateRestaurant(Restaurant restaurant) 
+    public void updateRestaurant(Restaurant restaurant) 
             throws RestaurantNotFoundException, InputDataValidationException, DishNotFoundException, BankAccountNotFoundException, TableConfigurationNotFoundException
     {
         if(restaurant != null && restaurant.getUseId()!= null)
@@ -236,8 +234,6 @@ public class RestaurantSessionBean implements RestaurantSessionBeanLocal {
                 restaurantToUpdate.setTableConfiguration(restaurant.getTableConfiguration());
                 restaurantToUpdate.setCreditAmount(restaurant.getCreditAmount());
                 restaurantToUpdate.setDescription(restaurant.getDescription());
-                
-                return restaurantToUpdate.getUseId();
                 
             }
             else
