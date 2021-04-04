@@ -16,5 +16,5 @@
 <!--  <property name="alternatedocroot_1" value="from=/uploadedFiles/* dir=C:/glassfish-5.1.0-uploadedfiles"/>-->
 
 <!--FOR MAC uncomment below path and comment out windows path-->
-<property name="alternatedocroot_1" value="from=/uploadedFiles/* dir=/Applications/glassfish-5.1.0-uploadedFiles"/>
+<!--<property name="alternatedocroot_1" value="from=/uploadedFiles/* dir=/Applications/glassfish-5.1.0-uploadedFiles"/>-->
 </glassfish-web-app>

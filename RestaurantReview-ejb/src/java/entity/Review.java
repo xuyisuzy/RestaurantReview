@@ -30,12 +30,12 @@ public class Review implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
     
-    @NotNull
     @Column(nullable = false)
+    @NotNull
     private String content;
     
-    @NotNull
     @Column(nullable = false)
+    @NotNull
     @Digits(integer = 1, fraction = 0)
     private Integer rating;
     
@@ -45,7 +45,7 @@ public class Review implements Serializable {
     
     @FutureOrPresent
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date timeStamp;
+    private Date timeOfCreation;
     
     @ManyToOne
     private Customer creater;
@@ -68,7 +68,7 @@ public class Review implements Serializable {
         this.rating = rating;
         this.photos = photos;
         this.numOfLikes = 0;
-        this.timeStamp = new Date();
+        this.timeOfCreation = new Date(new Date().getTime() + 3600);
     }
     
     
@@ -171,12 +171,8 @@ public class Review implements Serializable {
         return "entity.Review[ id=" + reviewId + " ]";
     }
 
-    public Date getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(Date timeStamp) {
-        this.timeStamp = timeStamp;
+    public Date getTimeOfCreation() {
+        return timeOfCreation;
     }
     
 }
